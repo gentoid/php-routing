@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm generator="osrm-test" version="0.6">
+  <node id="1" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z" lon="1.0026972038088113" lat="1.0">
+    <tag k="name" v="d"/>
+  </node>
+  <node id="2" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z" lon="1.0" lat="0.9991009320637295">
+    <tag k="name" v="a"/>
+  </node>
+  <node id="3" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z" lon="1.0008990679362704" lat="0.9991009320637295">
+    <tag k="name" v="b"/>
+  </node>
+  <node id="4" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z" lon="1.001798135872541" lat="0.9991009320637295">
+    <tag k="name" v="c"/>
+  </node>
+  <node id="5" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z" lon="1.0026972038088113" lat="0.998201864127459">
+    <tag k="name" v="e"/>
+  </node>
+  <way id="6" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z">
+    <nd ref="2"/>
+    <nd ref="3"/>
+    <nd ref="4"/>
+    <tag k="highway" v="primary"/>
+    <tag k="oneway" v=""/>
+    <tag k="name" v="abc"/>
+  </way>
+  <way id="7" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z">
+    <nd ref="4"/>
+    <nd ref="1"/>
+    <tag k="highway" v="primary"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="name" v="cd"/>
+  </way>
+  <way id="8" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z">
+    <nd ref="4"/>
+    <nd ref="5"/>
+    <tag k="highway" v="river"/>
+    <tag k="oneway" v=""/>
+    <tag k="name" v="ce"/>
+  </way>
+  <way id="9" version="1" uid="1" user="osrm" timestamp="2000-00-00T00:00:00Z">
+    <nd ref="1"/>
+    <nd ref="5"/>
+    <tag k="highway" v="primary"/>
+    <tag k="oneway" v=""/>
+    <tag k="name" v="de"/>
+  </way>
+</osm>
