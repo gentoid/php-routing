@@ -55,4 +55,4 @@ class Node {
 		return $this->trafficLight;
 	}
 
-} 
+}
