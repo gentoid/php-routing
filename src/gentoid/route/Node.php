@@ -1,5 +1,7 @@
 <?php
 
+namespace gentoid\route;
+
 class Node {
 
 	private $bollard = false;
@@ -7,10 +9,10 @@ class Node {
 	private $id = 0;
 
 	/**
-	 * @param SimpleXMLElement $node
-	 * @throws Exception
+	 * @param \SimpleXMLElement $node
+	 * @throws \Exception
 	 */
-	public function __construct(SimpleXMLElement $node) {
+	public function __construct(\SimpleXMLElement $node) {
 		if (isset($node['highway']) && $node['highway'] == 'traffic_signals') {
 			$this->trafficLight = true;
 		}
@@ -28,7 +30,7 @@ class Node {
 			$this->id = (int)$node['id'];
 		}
 		else {
-			throw new Exception('Node has no ID attribute');
+			throw new \Exception('Node has no ID attribute');
 		}
 	}
 
