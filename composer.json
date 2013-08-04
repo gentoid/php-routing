@@ -10,7 +10,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "gentoid\\route\\": "src/" }
+        "psr-0": { "gentoid\\": "src/" }
     },
     "require": {
         "symfony/yaml": "v2.3.2"
