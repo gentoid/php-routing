@@ -2,6 +2,7 @@
 
 namespace gentoid\route;
 
+use gentoid\route\profiles\BasicProfile;
 use Symfony\Component\Yaml as Yaml;
 
 class OSMExtractor {
@@ -39,13 +40,16 @@ class OSMExtractor {
 	 */
 	protected function loadConfig() {
 		$yaml = new Yaml\Parser();
-		try {
-			$config = $yaml->parse(file_get_contents('./config/extractor.yaml'));
-			$this->config = $config;
-		}
-		catch (Yaml\Exception\ParseException $e) {
-			echo 'Unable to parse the YAML string: '.$e->getMessage();
-			throw $e;
+		$config = $yaml->parse(file_get_contents('./config/extractor.yaml'));
+		$this->config = $config;
+
+		$profiles = (isset($config['profiles'])) ? $config['profiles'] : array('car');
+
+		foreach ($profiles as $name) {
+			$className = "\\gentoid\\route\\profiles\\".ucwords($name)."Profile";
+
+			/** @var BasicProfile $profile */
+			$profile = new $className();
 		}
 
 		if (isset($config['accessTags'])) {
