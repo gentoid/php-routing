@@ -6,32 +6,18 @@ class Node {
 
 	private $bollard = false;
 	private $trafficLight = false;
+
+	/** @var int */
 	private $id = 0;
 
+	/** @var array */
+	protected $attributes = array();
+
 	/**
-	 * @param \SimpleXMLElement $node
-	 * @throws \Exception
+	 * @param $id
 	 */
-	public function __construct(\SimpleXMLElement $node) {
-		if (isset($node['highway']) && $node['highway'] == 'traffic_signals') {
-			$this->trafficLight = true;
-		}
-
-		$registry = Registry::getInstance();
-
-		foreach ($node->attributes() as $attr => $val) {
-			if ((in_array($attr, $registry->getAccessTagsHierarchy()) && in_array($val, $registry->getAccessTagsBlackList()))
-			|| ($attr === 'barrier' && !in_array($val, $registry->getBarrierWhiteList()))) {
-				$this->bollard = true;
-			}
-		}
-
-		if (isset($node['id'])) {
-			$this->id = (int)$node['id'];
-		}
-		else {
-			throw new \Exception('Node has no ID attribute');
-		}
+	public function __construct($id) {
+		$this->id = $id;
 	}
 
 	/**
