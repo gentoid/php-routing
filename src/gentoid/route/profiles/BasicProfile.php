@@ -25,10 +25,14 @@ class BasicProfile {
 			$node = new Node($xmlNode['id']);
 
 		}
+
+		return array(); // todo
 	}
 
 	/**
 	 * @return \gentoid\route\Way[]
 	 */
-	public function extractWays(){}
+	public function extractWays(){
+		return array(); // todo
+	}
 } 

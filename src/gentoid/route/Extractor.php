@@ -32,7 +32,7 @@ class Extractor {
 	 */
 	public function extract($file) {
 		if (!file_exists($file)) {
-			throw new \Exception('There\'s no file "'.$file.'"');
+			throw new \Exception('Couldn\'t open file "'.$file.'"');
 		}
 		$this->xml = new \SimpleXMLElement(file_get_contents($file));
 
