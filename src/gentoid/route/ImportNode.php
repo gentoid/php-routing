@@ -3,21 +3,16 @@
 namespace gentoid\route;
 
 
-class ImportNode {
+class ImportNode extends Node {
 
-	/** @var int */
-	protected $id;
+	/** @var array */
+	protected $attributes = array();
 
-	/** @var float */
-	protected $lat;
+	public function clear() {
+		$this->coordinate->reset();
+		$this->nodeId->setValue('0');
+		$this->bollard = false;
+		$this->trafficLight = false;
+	}
 
-	/** @var float */
-	protected $lon;
-
-	/** @var bool */
-	protected $bollard = false;
-
-	/** @var bool */
-	protected $trafficLight = false;
-
-} 
+}

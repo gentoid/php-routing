@@ -2,30 +2,13 @@
 
 namespace gentoid\route;
 
-class Node {
+class Node extends NodeCoords {
 
-	private $bollard = false;
-	private $trafficLight = false;
+	/** @var bool */
+	protected $bollard = false;
 
-	/** @var int */
-	private $id = 0;
-
-	/** @var array */
-	protected $attributes = array();
-
-	/**
-	 * @param $id
-	 */
-	public function __construct($id) {
-		$this->id = $id;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+	/** @var bool */
+	protected $trafficLight = false;
 
 	/**
 	 * @return boolean
@@ -39,6 +22,24 @@ class Node {
 	 */
 	public function getTrafficLight() {
 		return $this->trafficLight;
+	}
+
+	/**
+	 * @param boolean $bollard
+	 * @return \gentoid\route\Node
+	 */
+	public function setBollard($bollard) {
+		$this->bollard = (bool)$bollard;
+		return $this;
+	}
+
+	/**
+	 * @param boolean $trafficLight
+	 * @return \gentoid\route\Node
+	 */
+	public function setTrafficLight($trafficLight) {
+		$this->trafficLight = (bool)$trafficLight;
+		return $this;
 	}
 
 }
