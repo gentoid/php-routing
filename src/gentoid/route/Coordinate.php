@@ -6,10 +6,10 @@ namespace gentoid\route;
 class Coordinate {
 
 	/** @var float */
-	protected $lat;
+	protected $lat = 0.0;
 
 	/** @var float */
-	protected $lon;
+	protected $lon = 0.0;
 
 	const RAD = 0.017453292519943295769236907684886;
 	const EARTH_RADIUS = 6372797.560856;

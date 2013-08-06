@@ -9,6 +9,13 @@ class BigInt {
 	protected $value;
 
 	/**
+	 * @param string $value
+	 */
+	public function __construct($value = '0') {
+		$this->setValue($value);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getValue() {
