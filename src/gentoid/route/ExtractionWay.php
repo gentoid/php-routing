@@ -56,6 +56,7 @@ class ExtractionWay {
 	protected $keyVals;
 
 	public function __construct() {
+		$this->direction = new Direction();
 		$this->clear();
 	}
 

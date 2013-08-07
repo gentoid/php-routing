@@ -17,6 +17,12 @@ class Restriction {
 	/** @var bool */
 	protected $isOnly = false;
 
+	public function __construct() {
+		$this->viaNode  = new NodeID();
+		$this->fromNode = new NodeID();
+		$this->toNode   = new NodeID();
+	}
+
 	/**
 	 * @param Restriction $a
 	 * @param Restriction $b

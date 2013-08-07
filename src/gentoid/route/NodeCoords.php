@@ -11,6 +11,11 @@ class NodeCoords {
 	/** @var \gentoid\route\NodeID */
 	protected $nodeId;
 
+	public function __construct() {
+		$this->coordinate = new Coordinate();
+		$this->nodeId = new NodeID();
+	}
+
 	/**
 	 * @return \gentoid\route\Coordinate
 	 */

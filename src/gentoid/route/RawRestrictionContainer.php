@@ -21,6 +21,11 @@ class RawRestrictionContainer {
 	/** @var \gentoid\route\NodeID */
 	protected $viaNode;
 
+	public function __construct() {
+		$this->restriction = new Restriction();
+		$this->viaNode = new NodeID();
+	}
+
 	/**
 	 * @param RawRestrictionContainer $a
 	 * @param RawRestrictionContainer $b
