@@ -28,7 +28,7 @@ class BigInt {
 	 */
 	public function setValue($value) {
 		$value = trim($value);
-		if (!preg_match('/^\d+$/', $value)) {
+		if (!preg_match('/^(-)?\d+$/', $value)) {
 			throw new \Exception($value.' is not an integer');
 		}
 		$this->value = $value;
