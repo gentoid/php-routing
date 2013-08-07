@@ -54,54 +54,51 @@ class XMLParser extends BaseParser {
 		$except_tag_string = '';
 
 		foreach ($xmlRelation->xpath('tag') as $tag) {
-			if ($attributes = $tag->attributes()) {
-				$key = null;
-				$value = null;
-				foreach ($attributes as $k => $v) {
-					if ($k == 'k') {
-						$key = $v;
-					}
-					elseif ($k == 'v') {
-						$value = $v;
-					}
+
+			$key = null;
+			$value = null;
+			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
+				if ($k == 'k') {
+					$key = $v;
 				}
-				if ($key && $value) {
-					if ($key == 'restriction' && strpos('only_', $value) !== false) {
-						$restriction->getRestriction()->setIsOnly(true);
-					}
-					elseif ($key == 'except') {
-						$except_tag_string = $value;
-					}
+				elseif ($k == 'v') {
+					$value = $v;
+				}
+			}
+			if ($key && $value) {
+				if ($key == 'restriction' && strpos('only_', $value) !== false) {
+					$restriction->getRestriction()->setIsOnly(true);
+				}
+				elseif ($key == 'except') {
+					$except_tag_string = $value;
 				}
 			}
 		}
 
 		foreach ($xmlRelation->xpath('member') as $member) {
-			if ($attributes = $member->attributes()) {
-				$ref  = null;
-				$role = null;
-				$type = null;
-				foreach ($attributes as $k => $v) {
-					if ($k == 'ref') {
-						$ref = $v;
-					}
-					elseif ($k == 'role') {
-						$role = $v;
-					}
-					elseif ($k == 'type') {
-						$type = $v;
-					}
+			$ref  = null;
+			$role = null;
+			$type = null;
+			foreach ($attributes = $this->readXMLAttributes($member) as $k => $v) {
+				if ($k == 'ref') {
+					$ref = $v;
 				}
-				if ($ref) {
-					if ($role == 'to' && $type == 'way') {
-						$restriction->setToWay($ref);
-					}
-					elseif ($role == 'from' && $type == 'way') {
-						$restriction->setFromWay($ref);
-					}
-					elseif ($role == 'via' && $type  == 'node') {
-						$restriction->setViaNode(new NodeID($ref));
-					}
+				elseif ($k == 'role') {
+					$role = $v;
+				}
+				elseif ($k == 'type') {
+					$type = $v;
+				}
+			}
+			if ($ref) {
+				if ($role == 'to' && $type == 'way') {
+					$restriction->setToWay($ref);
+				}
+				elseif ($role == 'from' && $type == 'way') {
+					$restriction->setFromWay($ref);
+				}
+				elseif ($role == 'via' && $type  == 'node') {
+					$restriction->setViaNode(new NodeID($ref));
 				}
 			}
 		}
@@ -125,6 +122,18 @@ class XMLParser extends BaseParser {
 	 * @return ImportNode
 	 */
 	protected function readXMLNode(\SimpleXMLElement $xmlNode) {
+	}
+
+	/**
+	 * @param \SimpleXMLElement $xml
+	 * @return array|\SimpleXMLElement
+	 */
+	protected function readXMLAttributes(\SimpleXMLElement $xml) {
+		if ($attributes = $xml->attributes()) {
+			return $attributes;
+		}
+
+		return array();
 	}
 
 }
