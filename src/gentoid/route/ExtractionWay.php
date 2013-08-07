@@ -292,17 +292,11 @@ class ExtractionWay {
 	}
 
 	/**
-	 * @param \gentoid\route\NodeID[] $path
-	 * @throws \Exception
+	 * @param NodeID $n
 	 * @return ExtractionWay
 	 */
-	public function setPath(array $path) {
-		foreach ($path as $node) {
-			if (!($node instanceof \gentoid\route\NodeID)) {
-				throw new \Exception('Not NodeID');
-			}
-		}
-		$this->path = $path;
+	public function addPathElement(NodeID $n) {
+		$this->path[] = $n;
 		return $this;
 	}
 
@@ -314,11 +308,12 @@ class ExtractionWay {
 	}
 
 	/**
-	 * @param array $keyVals
+	 * @param string $key
+	 * @param mixed $val
 	 * @return ExtractionWay
 	 */
-	public function setKeyVals($keyVals) {
-		$this->keyVals = $keyVals;
+	public function addKeyVal($key, $val) {
+		$this->keyVals[$key] = $val;
 		return $this;
 	}
 
