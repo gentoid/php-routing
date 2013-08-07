@@ -59,10 +59,10 @@ class XMLParser extends BaseParser {
 			$value = null;
 			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
 				if ($k == 'k') {
-					$key = $v;
+					$key = (string)$v;
 				}
 				elseif ($k == 'v') {
-					$value = $v;
+					$value = (string)$v;
 				}
 			}
 			if ($key && $value) {
@@ -81,13 +81,13 @@ class XMLParser extends BaseParser {
 			$type = null;
 			foreach ($attributes = $this->readXMLAttributes($member) as $k => $v) {
 				if ($k == 'ref') {
-					$ref = $v;
+					$ref = (string)$v;
 				}
 				elseif ($k == 'role') {
-					$role = $v;
+					$role = (string)$v;
 				}
 				elseif ($k == 'type') {
-					$type = $v;
+					$type = (string)$v;
 				}
 			}
 			if ($ref) {
@@ -119,7 +119,7 @@ class XMLParser extends BaseParser {
 
 		foreach ($attributes = $this->readXMLAttributes($xmlWay) as $k => $v) {
 			if ($k == 'id') {
-				$way->setOsmId($v)->setId($v);
+				$way->setOsmId((string)$v)->setId((string)$v);
 				break;
 			}
 		}
@@ -129,10 +129,10 @@ class XMLParser extends BaseParser {
 			$val = null;
 			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
 				if ($k == 'k') {
-					$key = $v;
+					$key = (string)$v;
 				}
 				elseif ($k == 'v') {
-					$val = $v;
+					$val = (string)$v;
 				}
 			}
 			if ($key && $val) {
@@ -141,8 +141,8 @@ class XMLParser extends BaseParser {
 		}
 		foreach ($xmlWay->xpath('nd') as $nd) {
 			foreach ($attributes = $this->readXMLAttributes($nd) as $k => $v) {
-				if ($k == 'ref' && $v) {
-					$way->addPathElement(new NodeID($v));
+				if ($k == 'ref' && (string)$v) {
+					$way->addPathElement(new NodeID((string)$v));
 					break;
 				}
 			}
@@ -158,14 +158,14 @@ class XMLParser extends BaseParser {
 	protected function readXMLNode(\SimpleXMLElement $xmlNode) {
 		$node = new ImportNode();
 		foreach ($attributes = $this->readXMLAttributes($xmlNode) as $k => $v) {
-			if ($k == 'lat' && $v) {
-				$node->getCoordinate()->setLat($v);
+			if ($k == 'lat' && (string)$v) {
+				$node->getCoordinate()->setLat((string)$v);
 			}
-			elseif ($k == 'lon' && $v) {
-				$node->getCoordinate()->setLon($v);
+			elseif ($k == 'lon' && (string)$v) {
+				$node->getCoordinate()->setLon((string)$v);
 			}
-			elseif ($k == 'id' && $v) {
-				$node->setNodeId(new NodeID($v));
+			elseif ($k == 'id' && (string)$v) {
+				$node->setNodeId(new NodeID((string)$v));
 			}
 		}
 
@@ -174,10 +174,10 @@ class XMLParser extends BaseParser {
 			$val = null;
 			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
 				if ($k == 'k') {
-					$key = $v;
+					$key = (string)$v;
 				}
 				elseif ($k == 'v') {
-					$val = $v;
+					$val = (string)$v;
 				}
 			}
 			if ($key && $val) {
