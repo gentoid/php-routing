@@ -292,6 +292,21 @@ class ExtractionWay {
 	}
 
 	/**
+	 * @param \gentoid\route\NodeID[] $path
+	 * @throws \Exception
+	 * @return ExtractionWay
+	 */
+	public function setPath(array $path) {
+		foreach ($path as $node) {
+			if (!($node instanceof \gentoid\route\NodeID)) {
+				throw new \Exception('Not NodeID');
+			}
+		}
+		$this->path = $path;
+		return $this;
+	}
+
+	/**
 	 * @param NodeID $n
 	 * @return ExtractionWay
 	 */
