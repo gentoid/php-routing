@@ -8,6 +8,7 @@ namespace gentoid\route;
 
 
 class ExtractionWay {
+	use Tag;
 
 	/** @var Direction */
 	protected $direction;
