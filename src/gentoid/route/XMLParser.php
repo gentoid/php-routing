@@ -115,6 +115,40 @@ class XMLParser extends BaseParser {
 	 * @return ExtractionWay
 	 */
 	protected function readXMLWay(\SimpleXMLElement $xmlWay) {
+		$way = new ExtractionWay();
+
+		foreach ($attributes = $this->readXMLAttributes($xmlWay) as $k => $v) {
+			if ($k == 'id') {
+				$way->setOsmId($v)->setId($v);
+				break;
+			}
+		}
+
+		foreach ($xmlWay->xpath('tag') as $tag) {
+			$key = null;
+			$val = null;
+			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
+				if ($k == 'k') {
+					$key = $v;
+				}
+				elseif ($k == 'v') {
+					$val = $v;
+				}
+			}
+			if ($key && $val) {
+				$way->addKeyVal($key, $val);
+			}
+		}
+		foreach ($xmlWay->xpath('nd') as $nd) {
+			foreach ($attributes = $this->readXMLAttributes($nd) as $k => $v) {
+				if ($k == 'ref' && $v) {
+					$way->addPathElement(new NodeID($v));
+					break;
+				}
+			}
+		}
+
+		return $way;
 	}
 
 	/**
