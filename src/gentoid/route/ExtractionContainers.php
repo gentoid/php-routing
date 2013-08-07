@@ -121,9 +121,121 @@ class ExtractionContainers {
 		fclose($fd);
 
 		$fd = fopen($outputFileName, 'w');
+		fwrite($fd, pack('X4'));
+
+		$i = $k = 0;
+		while (isset($this->usedNodeIDs[$i]) && isset($this->allNodes[$k])) {
+			$usedNodeID = &$this->usedNodeIDs[$i];
+			$node = &$this->allNodes[$k];
+
+			if ($usedNodeID->getValue() < $node->getNodeId()->getValue()) {
+				++$i;
+				continue;
+			}
+			if ($usedNodeID->getValue() > $node->getNodeId()->getValue()) {
+				++$k;
+				continue;
+			}
+			if ($usedNodeID->getValue() == $node->getNodeId()->getValue()) {
+				fwrite($fd, $node->pack());
+				++$i;
+				++$k;
+				++$usedNodeCounter;
+			}
+		}
+
+		$pos = ftell($fd);
+		fseek($fd, 0);
 		fwrite($fd, pack('L', $usedNodeCounter));
-		// todo
+		fseek($fd, $pos);
+
+		usort($this->allEdges, array('InternalExtractorEdge', 'CmpEdgeByStartID'));
+
+		fwrite($fd, pack('X4'));
+
+		$i = $k = 0;
+		while(isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
+			$edge = &$this->allEdges[$i];
+			$node = &$this->allNodes[$k];
+
+			if ($edge->getStart()->getValue() < $node->getNodeId()->getValue()) {
+				++$i;
+				continue;
+			}
+			if ($edge->getStart()->getValue() > $node->getNodeId()->getValue()) {
+				++$k;
+				continue;
+			}
+			if ($edge->getStart()->getValue() == $node->getNodeId()->getValue()) {
+				$edge->getStartCoord()->setLat($node->getCoordinate()->getLat());
+				$edge->getStartCoord()->setLon($node->getCoordinate()->getLon());
+				++$i;
+			}
+		}
+
+		usort($this->allEdges, array('InternalExtractorEdge', 'CmpEdgeByTargetID'));
+
+		$i = $k = 0;
+		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
+			$edge = &$this->allEdges[$i];
+			$node = &$this->allNodes[$k];
+
+			if ($edge->getTarget()->getValue() < $node->getNodeId()->getValue()) {
+				++$i;
+				continue;
+			}
+			if ($edge->getTarget()->getValue() > $node->getNodeId()->getValue()) {
+				++$k;
+				continue;
+			}
+			if ($edge->getTarget()->getValue() == $node->getNodeId()->getValue()) {
+				if (   $edge->getStartCoord()->getLat() != Coordinate::DEFAULT_VALUE
+					&& $edge->getStartCoord()->getLon() != Coordinate::DEFAULT_VALUE) {
+					$edge->getTargetCoord()->setLat($node->getCoordinate()->getLat());
+					$edge->getTargetCoord()->setLon($node->getCoordinate()->getLon());
+
+					$distance = Coordinate::ApproximateDistance($edge->getStartCoord(), $node->getCoordinate());
+					$weight = ($distance * 10) / ($edge->getSpeed() * 3.6);
+					$weight = max(1, round($edge->getIsDurationSet() ? $edge->getSpeed() : $weight), PHP_ROUND_HALF_UP);
+					$distance = max(1, $distance);
+					$zero = '0';
+					$one  = '1';
+
+					fwrite($fd, $edge->getStart() ->pack());
+					fwrite($fd, $edge->getTarget()->pack());
+					fwrite($fd, pack('L', $distance));
+
+					switch($edge->getDirection()) {
+						case Direction::NOT_SURE:
+						case Direction::BIDIRECTIONAL:
+							fwrite($fd, pack('a1', $zero));
+							break;
+						case Direction::ONEWAY:
+						case Direction::OPPOSITE:
+							fwrite($fd, pack('a1', $one));
+					}
+
+					fwrite($fd, pack('L', $weight));
+					fwrite($fd, $edge->pack());
+					++$usedEdgeCounter;
+				}
+				++$i;
+			}
+		}
+
+		fseek($fd, $pos);
+		fwrite($fd, pack('L', $usedEdgeCounter));
+		fclose($fd);
+
+		$nameOutFileName = $outputFileName . '.names';
+		$fd = fopen($nameOutFileName, 'w');
+		fwrite($fd, pack('L', count($this->nameVector)));
+		foreach ($this->nameVector as $name) {
+			fwrite($fd, pack('L', strlen($name)));
+			fwrite($fd, pack('a'.strlen($name), $name));
+		}
 		fclose($fd);
 	}
 
 }
+// todo: write asserts
