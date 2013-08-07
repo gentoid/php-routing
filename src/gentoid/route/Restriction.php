@@ -90,4 +90,11 @@ class Restriction {
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function pack() {
+		return $this->viaNode->pack() . $this->fromNode->pack() . $this->toNode->pack() . pack('S', $this->isOnly);
+	}
+
 }
