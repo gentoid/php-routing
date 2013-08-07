@@ -19,6 +19,9 @@ abstract class BaseParser {
 	/** @var BasicProfile */
 	protected $profile;
 
+	abstract public function readHead();
+	abstract public function parse();
+
 	/**
 	 * @param ExtractorCallbacks $ec
 	 * @param profiles\BasicProfile $profile
@@ -27,13 +30,13 @@ abstract class BaseParser {
 		$this->extractor_callbacks = $ec;
 		$this->profile = $profile;
 		$this->use_turn_restrictions = true;
-		$this->ReadRestrictionExceptions();
+		$this->readRestrictionExceptions();
 	}
 
 	/**
 	 * @param ImportNode $n
 	 */
-	public function ParseNode(ImportNode $n) {
+	public function parseNode(ImportNode $n) {
 		try {
 			$this->profile->nodeFunction($n);
 		}
@@ -43,14 +46,14 @@ abstract class BaseParser {
 	/**
 	 * @param ExtractionWay $w
 	 */
-	public function ParseWay(ExtractionWay $w) {
+	public function parseWay(ExtractionWay $w) {
 		try {
 			$this->profile->wayFunction($w);
 		}
 		catch (\Exception $e) {}
 	}
 
-	protected function ReadRestrictionExceptions() {
+	protected function readRestrictionExceptions() {
 		$this->profile->getExceptions($this->restriction_exceptions);
 	}
 
@@ -58,7 +61,7 @@ abstract class BaseParser {
 	 * @param string $except_tag_string
 	 * @return bool
 	 */
-	protected function ShouldIgnoreRestriction($except_tag_string) {
+	protected function shouldIgnoreRestriction($except_tag_string) {
 		if (strlen($except_tag_string) == 0) {
 			return false;
 		}
@@ -71,7 +74,6 @@ abstract class BaseParser {
 		}
 
 		return false;
-
 	}
 
 } 
