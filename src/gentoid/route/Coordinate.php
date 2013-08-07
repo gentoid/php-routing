@@ -5,11 +5,13 @@ namespace gentoid\route;
 
 class Coordinate {
 
-	/** @var float */
-	protected $lat = 0.0;
+	const DEFAULT_VALUE = 1000;
 
 	/** @var float */
-	protected $lon = 0.0;
+	protected $lat = Coordinate::DEFAULT_VALUE;
+
+	/** @var float */
+	protected $lon = Coordinate::DEFAULT_VALUE;
 
 	const RAD = 0.017453292519943295769236907684886;
 	const EARTH_RADIUS = 6372797.560856;
@@ -111,6 +113,13 @@ class Coordinate {
 		$y = ($b->getLat() - $a->getLat()) * Coordinate::RAD;
 
 		return sqrt($x * $x + $y * $y) * Coordinate::EARTH_RADIUS;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function pack() {
+		return pack('f', $this->lat) . pack('f', $this->lon);
 	}
 
 } 

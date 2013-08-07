@@ -51,4 +51,11 @@ class Node extends NodeCoords {
 		return bccomp($a->getNodeId()->getValue(), $b->getNodeId()->getValue());
 	}
 
+	/**
+	 * @return string
+	 */
+	public function pack() {
+		return $this->coordinate->pack() . $this->nodeId->pack() . pack('S', $this->bollard) . pack('S', $this->trafficLight);
+	}
+
 }
