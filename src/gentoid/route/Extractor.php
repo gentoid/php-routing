@@ -45,7 +45,7 @@ class Extractor {
 		$profiles = (isset($config['profiles'])) ? $config['profiles'] : array('car');
 
 		foreach ($profiles as $name) {
-			$this->profiles[$name] = ucwords($name)."Profile";
+			$this->profiles[$name] = "\\gentoid\\route\\profiles\\".ucwords($name)."Profile";
 		}
 	}
 
