@@ -7,14 +7,16 @@ namespace gentoid\route;
 
 class RawRestrictionContainer {
 
+	const DEFAULT_VALUE = -1;
+
 	/**@var \gentoid\route\Restriction */
 	protected $restriction;
 
 	/** @var int */
-	protected $fromWay;
+	protected $fromWay = RawRestrictionContainer::DEFAULT_VALUE;
 
 	/** @var int */
-	protected $toWay;
+	protected $toWay = RawRestrictionContainer::DEFAULT_VALUE;
 
 	/** @var \gentoid\route\NodeID */
 	protected $viaNode;
