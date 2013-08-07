@@ -31,11 +31,11 @@ class ExtractionContainers {
 		$usedNodeCounter = 0;
 		$usedEdgeCounter = 0;
 
-		usort($this->usedNodeIDs, array('NodeID', 'cmp'));
+		usort($this->usedNodeIDs, array('\\gentoid\\route\\NodeID', 'cmp'));
 		NodeID::unique($this->usedNodeIDs);
-		usort($this->allNodes, array('Node', 'CmpNodeByID'));
-		usort($this->wayStartEndVector, array('WayIDStartAndEndEdge', 'CmpWayByID'));
-		usort($this->restrictionsVector, array('RawRestrictionContainer', 'CmpRestrictionContainerByFrom'));
+		usort($this->allNodes, array('\\gentoid\\route\\Node', 'CmpNodeByID'));
+		usort($this->wayStartEndVector, array('\\gentoid\\route\\WayIDStartAndEndEdge', 'CmpWayByID'));
+		usort($this->restrictionsVector, array('\\gentoid\\route\\RawRestrictionContainer', 'CmpRestrictionContainerByFrom'));
 
 		$i = $k = 0;
 		while (isset($this->wayStartEndVector[$i]) && isset($this->restrictionsVector[$k])) {
@@ -70,7 +70,7 @@ class ExtractionContainers {
 			++$k;
 		}
 
-		usort($this->restrictionsVector, array('RawRestrictionContainer', 'CmpRestrictionContainerByTo'));
+		usort($this->restrictionsVector, array('\\gentoid\\route\\RawRestrictionContainer', 'CmpRestrictionContainerByTo'));
 
 		$usableRestrictionsCounter = 0;
 
@@ -125,7 +125,7 @@ class ExtractionContainers {
 		fclose($fd);
 
 		$fd = fopen($outputFileName, 'w');
-		fwrite($fd, pack('X4'));
+		fwrite($fd, pack('L', $usedNodeCounter));
 
 		$i = $k = 0;
 		while (isset($this->usedNodeIDs[$i]) && isset($this->allNodes[$k])) {
@@ -153,9 +153,9 @@ class ExtractionContainers {
 		fwrite($fd, pack('L', $usedNodeCounter));
 		fseek($fd, $pos);
 
-		usort($this->allEdges, array('InternalExtractorEdge', 'CmpEdgeByStartID'));
+		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByStartID'));
 
-		fwrite($fd, pack('X4'));
+		fwrite($fd, pack('L', $usedNodeCounter));
 
 		$i = $k = 0;
 		while(isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
@@ -177,7 +177,7 @@ class ExtractionContainers {
 			}
 		}
 
-		usort($this->allEdges, array('InternalExtractorEdge', 'CmpEdgeByTargetID'));
+		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByTargetID'));
 
 		$i = $k = 0;
 		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
