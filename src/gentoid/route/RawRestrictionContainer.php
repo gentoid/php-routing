@@ -22,19 +22,19 @@ class RawRestrictionContainer {
 	/**
 	 * @param RawRestrictionContainer $a
 	 * @param RawRestrictionContainer $b
-	 * @return bool
+	 * @return int
 	 */
 	public static function CmpRestrictionContainerByFrom(RawRestrictionContainer $a, RawRestrictionContainer $b) {
-		return $a->getFromWay() < $b->getFromWay();
+		return ($a->getFromWay() < $b->getFromWay()) ? -1 : 1;
 	}
 
 	/**
 	 * @param RawRestrictionContainer $a
 	 * @param RawRestrictionContainer $b
-	 * @return bool
+	 * @return int
 	 */
 	public static function CmpRestrictionContainerByTo(RawRestrictionContainer $a, RawRestrictionContainer $b) {
-		return $a->getToWay() < $b->getToWay();
+		return ($a->getToWay() < $b->getToWay()) ? -1 : 1;
 	}
 
 	/**

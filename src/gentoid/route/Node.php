@@ -43,11 +43,12 @@ class Node extends NodeCoords {
 	}
 
 	/**
+	 * @param Node $a
 	 * @param Node $b
-	 * @return bool
+	 * @return int
 	 */
-	public function CmpNodeByID(Node $b) {
-		return bccomp($this->nodeId->getValue(), $b->getNodeId()->getValue()) == -1;
+	public static function CmpNodeByID(Node $a, Node $b) {
+		return bccomp($a->getNodeId()->getValue(), $b->getNodeId()->getValue());
 	}
 
 }

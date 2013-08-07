@@ -112,11 +112,12 @@ class WayIDStartAndEndEdge {
 	}
 
 	/**
+	 * @param WayIDStartAndEndEdge $a
 	 * @param WayIDStartAndEndEdge $b
-	 * @return bool
+	 * @return int
 	 */
-	public function CmpWayByID(WayIDStartAndEndEdge $b) {
-		return $this->wayId < $b->getWayId();
+	public static function CmpWayByID(WayIDStartAndEndEdge $a, WayIDStartAndEndEdge $b) {
+		return ($a->getWayId() < $b->getWayId()) ? -1 : 1;
 	}
 
 }
