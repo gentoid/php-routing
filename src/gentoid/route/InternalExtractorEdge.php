@@ -59,19 +59,28 @@ class InternalExtractorEdge {
 	}
 
 	/**
+	 * @param InternalExtractorEdge $a
 	 * @param InternalExtractorEdge $b
-	 * @return bool
+	 * @return int
 	 */
-	public function CmpEdgeByStartID(\gentoid\route\InternalExtractorEdge $b) {
-		return bccomp($this->start->getValue(), $b->getStart()->getValue()) == -1;
+	public function CmpEdgeByStartID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
+		return bccomp($a->getStart()->getValue(), $b->getStart()->getValue());
 	}
 
 	/**
+	 * @param InternalExtractorEdge $a
 	 * @param InternalExtractorEdge $b
-	 * @return bool
+	 * @return int
 	 */
-	public function CmpEdgeByTargetID(\gentoid\route\InternalExtractorEdge $b) {
-		return bccomp($this->target->getValue(), $b->getTarget()->getValue()) == -1;
+	public function CmpEdgeByTargetID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
+		return bccomp($a->getTarget()->getValue(), $b->getTarget()->getValue());
+	}
+
+	/**
+	 * @return string
+	 */
+	public function pack() {
+		return pack('L', $this->type) . pack('L', $this->nameId) . pack('S', $this->isRoundabout) . pack('S', $this->ignoreInGrid) . pack('S', $this->isAccessRestricted) . pack('S', $this->isContraFlow);
 	}
 
 	/**
@@ -83,9 +92,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param int $osmId
+	 * @return InternalExtractorEdge
 	 */
 	public function setOsmId($osmId) {
-		$this->osmId = $osmId;
+		$this->osmId = intval($osmId);
+		return $this;
 	}
 
 	/**
@@ -97,9 +108,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param \gentoid\route\NodeID $start
+	 * @return InternalExtractorEdge
 	 */
-	public function setStart($start) {
+	public function setStart(\gentoid\route\NodeID $start) {
 		$this->start = $start;
+		return $this;
 	}
 
 	/**
@@ -111,9 +124,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param \gentoid\route\NodeID $target
+	 * @return InternalExtractorEdge
 	 */
-	public function setTarget($target) {
+	public function setTarget(\gentoid\route\NodeID $target) {
 		$this->target = $target;
+		return $this;
 	}
 
 	/**
@@ -125,9 +140,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param int $type
+	 * @return InternalExtractorEdge
 	 */
 	public function setType($type) {
-		$this->type = $type;
+		$this->type = intval($type);
+		return $this;
 	}
 
 	/**
@@ -139,9 +156,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param int $direction
+	 * @return InternalExtractorEdge
 	 */
 	public function setDirection($direction) {
-		$this->direction = $direction;
+		$this->direction = intval($direction);
+		return $this;
 	}
 
 	/**
@@ -149,6 +168,15 @@ class InternalExtractorEdge {
 	 */
 	public function getSpeed() {
 		return $this->speed;
+	}
+
+	/**
+	 * @param float $speed
+	 * @return InternalExtractorEdge
+	 */
+	public function setSpeed($speed) {
+		$this->speed = floatval($speed);
+		return $this;
 	}
 
 	/**
@@ -160,9 +188,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param int $nameId
+	 * @return InternalExtractorEdge
 	 */
 	public function setNameId($nameId) {
-		$this->nameId = $nameId;
+		$this->nameId = intval($nameId);
+		return $this;
 	}
 
 	/**
@@ -174,9 +204,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param boolean $isRoundabout
+	 * @return InternalExtractorEdge
 	 */
 	public function setIsRoundabout($isRoundabout) {
-		$this->isRoundabout = $isRoundabout;
+		$this->isRoundabout = (boolean)$isRoundabout;
+		return $this;
 	}
 
 	/**
@@ -188,9 +220,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param boolean $ignoreInGrid
+	 * @return InternalExtractorEdge
 	 */
 	public function setIgnoreInGrid($ignoreInGrid) {
-		$this->ignoreInGrid = $ignoreInGrid;
+		$this->ignoreInGrid = (boolean)$ignoreInGrid;
+		return $this;
 	}
 
 	/**
@@ -198,6 +232,15 @@ class InternalExtractorEdge {
 	 */
 	public function getIsDurationSet() {
 		return $this->isDurationSet;
+	}
+
+	/**
+	 * @param $isDurationSet
+	 * @return InternalExtractorEdge
+	 */
+	public function setIsDurationSet($isDurationSet) {
+		$this->isDurationSet = (boolean)$isDurationSet;
+		return $this;
 	}
 
 	/**
@@ -209,9 +252,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param boolean $isAccessRestricted
+	 * @return InternalExtractorEdge
 	 */
 	public function setIsAccessRestricted($isAccessRestricted) {
-		$this->isAccessRestricted = $isAccessRestricted;
+		$this->isAccessRestricted = (boolean)$isAccessRestricted;
+		return $this;
 	}
 
 	/**
@@ -223,9 +268,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param boolean $isContraFlow
+	 * @return InternalExtractorEdge
 	 */
 	public function setIsContraFlow($isContraFlow) {
-		$this->isContraFlow = $isContraFlow;
+		$this->isContraFlow = (boolean)$isContraFlow;
+		return $this;
 	}
 
 	/**
@@ -237,9 +284,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param \gentoid\route\Coordinate $startCoord
+	 * @return InternalExtractorEdge
 	 */
-	public function setStartCoord($startCoord) {
+	public function setStartCoord(\gentoid\route\Coordinate $startCoord) {
 		$this->startCoord = $startCoord;
+		return $this;
 	}
 
 	/**
@@ -251,9 +300,11 @@ class InternalExtractorEdge {
 
 	/**
 	 * @param \gentoid\route\Coordinate $targetCoord
+	 * @return InternalExtractorEdge
 	 */
-	public function setTargetCoord($targetCoord) {
+	public function setTargetCoord(\gentoid\route\Coordinate $targetCoord) {
 		$this->targetCoord = $targetCoord;
+		return $this;
 	}
 
 
