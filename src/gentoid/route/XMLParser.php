@@ -156,6 +156,36 @@ class XMLParser extends BaseParser {
 	 * @return ImportNode
 	 */
 	protected function readXMLNode(\SimpleXMLElement $xmlNode) {
+		$node = new ImportNode();
+		foreach ($attributes = $this->readXMLAttributes($xmlNode) as $k => $v) {
+			if ($k == 'lat' && $v) {
+				$node->getCoordinate()->setLat($v);
+			}
+			elseif ($k == 'lon' && $v) {
+				$node->getCoordinate()->setLon($v);
+			}
+			elseif ($k == 'id' && $v) {
+				$node->setNodeId(new NodeID($v));
+			}
+		}
+
+		foreach ($xmlNode->xpath('tag') as $tag) {
+			$key = null;
+			$val = null;
+			foreach ($attributes = $this->readXMLAttributes($tag) as $k => $v) {
+				if ($k == 'k') {
+					$key = $v;
+				}
+				elseif ($k == 'v') {
+					$val = $v;
+				}
+			}
+			if ($key && $val) {
+				$node->addKeyVal($key, $val);
+			}
+		}
+
+		return $node;
 	}
 
 	/**
