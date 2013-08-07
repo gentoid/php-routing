@@ -48,7 +48,7 @@ class RawRestrictionContainer {
 	 * @param \gentoid\route\Restriction $restriction
 	 * @return \gentoid\route\RawRestrictionContainer
 	 */
-	public function setRestriction($restriction) {
+	public function setRestriction(\gentoid\route\Restriction $restriction) {
 		$this->restriction = $restriction;
 		return $this;
 	}
@@ -96,7 +96,7 @@ class RawRestrictionContainer {
 	 * @param \gentoid\route\NodeID $viaNode
 	 * @return \gentoid\route\RawRestrictionContainer
 	 */
-	public function setViaNode($viaNode) {
+	public function setViaNode(\gentoid\route\NodeID $viaNode) {
 		$this->viaNode = $viaNode;
 		return $this;
 	}
