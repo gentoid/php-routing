@@ -9,6 +9,9 @@ class ImportNode extends Node {
 	/** @var array */
 	protected $attributes = array();
 
+	/** @var array */
+	protected $keyVals = array();
+
 	public function clear() {
 		$this->coordinate->reset();
 		$this->nodeId->setValue('0');
@@ -25,6 +28,21 @@ class ImportNode extends Node {
 			return $this->attributes[$attr];
 		}
 		return null;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getKeyVals() {
+		return $this->keyVals;
+	}
+
+	/**
+	 * @param $key
+	 * @param $val
+	 */
+	public function addKeyVal($key, $val) {
+		$this->keyVals[$key] = $val;
 	}
 
 }
