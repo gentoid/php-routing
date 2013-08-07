@@ -120,9 +120,11 @@ class ExtractorCallbacks {
 
 	/**
 	 * @param \string[] $strings
+	 * @return ExtractorCallbacks
 	 */
 	public function setStrings(array $strings) {
 		$this->strings = $strings;
+		return $this;
 	}
 
 	/**
@@ -134,9 +136,11 @@ class ExtractorCallbacks {
 
 	/**
 	 * @param \gentoid\route\ExtractionContainers $external
+	 * @return ExtractorCallbacks
 	 */
 	public function setExternal(\gentoid\route\ExtractionContainers $external) {
 		$this->external = $external;
+		return $this;
 	}
 
 
