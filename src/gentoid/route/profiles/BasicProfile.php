@@ -3,36 +3,29 @@
 namespace gentoid\route\profiles;
 
 
-use gentoid\route\Node;
+abstract class BasicProfile {
 
-class BasicProfile {
-
-	/** @var \SimpleXMLElement */
-	protected $xml;
+	protected $restriction_exception_tags = array();
 
 	/**
-	 * @param \SimpleXMLElement $xml
+	 * @param array $restrictionExceptions
 	 */
-	public function loadXml(\SimpleXMLElement $xml) {
-		$this->xml = $xml;
-	}
-
-	/**
-	 * @return \gentoid\route\Node[]
-	 */
-	public function extractNodes() {
-		foreach ($this->xml->xpath('node') as $xmlNode) {
-			$node = new Node($xmlNode['id']);
-
+	public function getExceptions(array &$restrictionExceptions) {
+		foreach ($this->restriction_exception_tags as $exception) {
+			$restrictionExceptions[] = $exception;
 		}
-
-		return array(); // todo
 	}
 
 	/**
-	 * @return \gentoid\route\Way[]
+	 * @param \gentoid\route\ImportNode $n
+	 * @return mixed
 	 */
-	public function extractWays(){
-		return array(); // todo
-	}
+	abstract public function nodeFunction(\gentoid\route\ImportNode $n);
+
+	/**
+	 * @param \gentoid\route\ExtractionWay $w
+	 * @return mixed
+	 */
+	abstract public function wayFunction(\gentoid\route\ExtractionWay $w);
+
 } 
