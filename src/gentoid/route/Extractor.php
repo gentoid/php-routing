@@ -2,73 +2,50 @@
 
 namespace gentoid\route;
 
-use gentoid\route\profiles\BasicProfile;
-use Symfony\Component\Yaml as Yaml;
 
 class Extractor {
 
 	/** @var array */
 	protected $config;
 
-	/** @var BasicProfile[] */
+	/** @var string[] */
 	protected $profiles;
 
-	/** @var \SimpleXMLElement */
-	protected $xml;
-
-	/** @var Node[] */
-	protected $nodes = array();
-
-	/** @var Way[] */
-	protected $ways = array();
-
-	public function __construct() {
+	public function __construct($file) {
 		$this->init();
-	}
+		$isPBF = is_int(strpos('osm.pbf', $file));
 
-	/**
-	 * @param string $file
-	 * @throws \Exception
-	 */
-	public function extract($file) {
-		if (!file_exists($file)) {
-			throw new \Exception('Couldn\'t open file "'.$file.'"');
-		}
-		$this->xml = new \SimpleXMLElement(file_get_contents($file));
+		$containers = new ExtractionContainers();
+		$extractCallBacks = new ExtractorCallbacks();
+		$extractCallBacks->setExternal($containers);
 
 		foreach ($this->profiles as $profile) {
-			$profile->loadXml($this->xml);
-			$this->nodes = array_merge($this->nodes, $profile->extractNodes());
+			if ($isPBF) {
+				// todo
+			}
+			else {
+				/** @var BaseParser $parser */
+				$parser = new XMLParser($file, $extractCallBacks, new $profile);
+			}
 
+			$parser->parse();
 		}
 
-		foreach ($this->profiles as $profile) {
-			$this->ways  = array_merge($this->ways, $profile->extractWays());
-		}
+		$containers->prepareData($file.'.phprd', $file.'.phprd.restrictions');
 	}
 
 	/**
 	 * @throws \Exception|\Symfony\Component\Yaml\Exception\ParseException
 	 */
 	protected function init() {
-		$yaml = new Yaml\Parser();
+		$yaml = new \Symfony\Component\Yaml\Parser();
 		$config = $yaml->parse(file_get_contents('./config/extractor.yaml'));
 		$this->config = $config;
 
 		$profiles = (isset($config['profiles'])) ? $config['profiles'] : array('car');
 
 		foreach ($profiles as $name) {
-			$className = "\\gentoid\\route\\profiles\\".ucwords($name)."Profile";
-
-			try {
-				/** @var BasicProfile $profile */
-				$profile = new $className();
-				$this->profiles[$name] = $profile;
-			}
-			catch (\Exception $e) {
-				echo 'There\'s no profile '.$name.PHP_EOL;
-				continue;
-			}
+			$this->profiles[$name] = ucwords($name)."Profile";
 		}
 	}
 
