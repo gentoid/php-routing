@@ -21,8 +21,8 @@ class InternalExtractorEdge {
 	/** @var int */
 	protected $type = 0;
 
-	/** @var int */
-	protected $direction = 0;
+	/** @var Direction */
+	protected $direction;
 
 	/** @var float */
 	protected $speed = 0;
@@ -54,6 +54,7 @@ class InternalExtractorEdge {
 	public function __construct() {
 		$this->start = new NodeID();
 		$this->target = new NodeID();
+		$this->direction = new Direction(Direction::NOT_SURE);
 		$this->startCoord = new Coordinate();
 		$this->targetCoord = new Coordinate();
 	}
@@ -148,17 +149,17 @@ class InternalExtractorEdge {
 	}
 
 	/**
-	 * @return int
+	 * @return Direction
 	 */
 	public function getDirection() {
 		return $this->direction;
 	}
 
 	/**
-	 * @param int $direction
+	 * @param Direction $direction
 	 * @return InternalExtractorEdge
 	 */
-	public function setDirection($direction) {
+	public function setDirection(Direction $direction) {
 		$this->direction = intval($direction);
 		return $this;
 	}

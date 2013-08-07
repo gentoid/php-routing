@@ -23,6 +23,10 @@ class ExtractionContainers {
 	/** @var \gentoid\route\WayIDStartAndEndEdge[] */
 	protected $wayStartEndVector = array();
 
+	/**
+	 * @param string $outputFileName
+	 * @param string $restrictionsFileName
+	 */
 	public function prepareData($outputFileName, $restrictionsFileName) {
 		$usedNodeCounter = 0;
 		$usedEdgeCounter = 0;
@@ -235,6 +239,90 @@ class ExtractionContainers {
 			fwrite($fd, pack('a'.strlen($name), $name));
 		}
 		fclose($fd);
+	}
+
+	/**
+	 * @return \gentoid\route\Node[]
+	 */
+	public function getAllNodes() {
+		return $this->allNodes;
+	}
+
+	/**
+	 * @param \gentoid\route\Node $node
+	 */
+	public function addNode(\gentoid\route\Node $node) {
+		$this->allNodes[] = $node;
+	}
+
+	/**
+	 * @return \gentoid\route\InternalExtractorEdge[]
+	 */
+	public function getAllEdges() {
+		return $this->allEdges;
+	}
+
+	/**
+	 * @param \gentoid\route\InternalExtractorEdge $edge
+	 */
+	public function addEdge(\gentoid\route\InternalExtractorEdge $edge) {
+		$this->allEdges[] = $edge;
+	}
+
+	/**
+	 * @return \gentoid\route\RawRestrictionContainer[]
+	 */
+	public function getRestrictionsVector() {
+		return $this->restrictionsVector;
+	}
+
+	/**
+	 * @param \gentoid\route\RawRestrictionContainer $restriction
+	 */
+	public function addRestriction(\gentoid\route\RawRestrictionContainer $restriction) {
+		$this->restrictionsVector[] = $restriction;
+	}
+
+	/**
+	 * @return \string[]
+	 */
+	public function getNameVector() {
+		return $this->nameVector;
+	}
+
+	/**
+	 * @param \string[] $name
+	 */
+	public function addName($name) {
+		$this->nameVector[] = $name;
+	}
+
+	/**
+	 * @return \gentoid\route\NodeID[]
+	 */
+	public function getUsedNodeIDs() {
+		return $this->usedNodeIDs;
+	}
+
+	/**
+	 * @param \gentoid\route\NodeID $usedNodeID
+	 */
+	public function addUsedNodeID(\gentoid\route\NodeID $usedNodeID) {
+		$this->usedNodeIDs[] = $usedNodeID;
+	}
+
+	/**
+	 * @return \gentoid\route\WayIDStartAndEndEdge[]
+	 */
+	public function getWayStartEndVector() {
+		return $this->wayStartEndVector;
+	}
+
+	/**
+	 * @param \gentoid\route\WayIDStartAndEndEdge $wayStartEndEdge
+	 */
+	public function addWayStartEndVector(\gentoid\route\WayIDStartAndEndEdge $wayStartEndEdge) {
+		$this->wayStartEndVector[] = $wayStartEndEdge;
 	}
 
 }
