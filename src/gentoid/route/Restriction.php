@@ -37,7 +37,7 @@ class Restriction {
 	 * @param \gentoid\route\NodeID $fromNode
 	 * @return \gentoid\route\Restriction
 	 */
-	public function setFromNode($fromNode) {
+	public function setFromNode(\gentoid\route\NodeID $fromNode) {
 		$this->fromNode = $fromNode;
 		return $this;
 	}
@@ -53,7 +53,7 @@ class Restriction {
 	 * @param \gentoid\route\NodeID $viaNode
 	 * @return \gentoid\route\Restriction
 	 */
-	public function setViaNode($viaNode) {
+	public function setViaNode(\gentoid\route\NodeID $viaNode) {
 		$this->viaNode = $viaNode;
 		return $this;
 	}
@@ -69,7 +69,7 @@ class Restriction {
 	 * @param \gentoid\route\NodeID $toNode
 	 * @return \gentoid\route\Restriction
 	 */
-	public function setToNode($toNode) {
+	public function setToNode(\gentoid\route\NodeID $toNode) {
 		$this->toNode = $toNode;
 		return $this;
 	}
