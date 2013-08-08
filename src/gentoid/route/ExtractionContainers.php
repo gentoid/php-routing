@@ -209,7 +209,7 @@ class ExtractionContainers {
 					fwrite($fd, $edge->getTarget()->pack());
 					fwrite($fd, pack('L', $distance));
 
-					switch($edge->getDirection()) {
+					switch($edge->getDirection()->getValue()) {
 						case Direction::NOT_SURE:
 						case Direction::BIDIRECTIONAL:
 							fwrite($fd, pack('a1', $zero));
