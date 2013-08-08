@@ -98,7 +98,7 @@ class XMLParser extends BaseParser {
 					$restriction->setFromWay($ref);
 				}
 				elseif ($role == 'via' && $type  == 'node') {
-					$restriction->setViaNode(new NodeID($ref));
+					$restriction->getRestriction()->setViaNode(new NodeID($ref));
 				}
 			}
 		}
