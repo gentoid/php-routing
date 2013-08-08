@@ -1,8 +1,0 @@
-accessTags:
-  hierarchy:
-    [ motorcar, motor_vehicle, vehicle, access ]
-  blacklist:
-    [ no, private, agricultural, forestry ]
-barrier:
-  whitelist:
-    [ cattle_grid, border_control, toll_booth, sally_port, gate, designated ]
