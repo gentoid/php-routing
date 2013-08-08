@@ -3,9 +3,11 @@
 namespace gentoid\route;
 
 
+use gentoid\route\DataStructures\Coordinate;
+
 class NodeCoords {
 
-	/** @var \gentoid\route\Coordinate */
+	/** @var \gentoid\route\DataStructures\Coordinate */
 	protected $coordinate;
 
 	/** @var \gentoid\route\NodeID */
@@ -17,14 +19,14 @@ class NodeCoords {
 	}
 
 	/**
-	 * @return \gentoid\route\Coordinate
+	 * @return \gentoid\route\DataStructures\Coordinate
 	 */
 	public function getCoordinate() {
 		return $this->coordinate;
 	}
 
 	/**
-	 * @param \gentoid\route\Coordinate $coordinate
+	 * @param \gentoid\route\DataStructures\Coordinate $coordinate
 	 */
 	public function setCoordinate($coordinate) {
 		$this->coordinate = $coordinate;

@@ -3,6 +3,8 @@
 namespace gentoid\route;
 
 
+use gentoid\route\DataStructures\Coordinate;
+
 class ExtractionContainers {
 
 	/** @var \gentoid\route\NodeID[] */

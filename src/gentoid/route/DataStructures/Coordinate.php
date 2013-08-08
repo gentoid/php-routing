@@ -1,6 +1,6 @@
 <?php
 
-namespace gentoid\route;
+namespace gentoid\route\DataStructures;
 
 
 class Coordinate {
@@ -29,7 +29,7 @@ class Coordinate {
 
 	/**
 	 * @param float $lat
-	 * @return \gentoid\route\Coordinate
+	 * @return Coordinate
 	 */
 	public function setLat($lat) {
 		$this->lat = $this->round($lat);
@@ -45,7 +45,7 @@ class Coordinate {
 
 	/**
 	 * @param float $lon
-	 * @return \gentoid\route\Coordinate
+	 * @return Coordinate
 	 */
 	public function setLon($lon) {
 		$this->lon = $this->round($lon);

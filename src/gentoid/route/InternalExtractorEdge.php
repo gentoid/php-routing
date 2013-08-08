@@ -7,6 +7,8 @@
 namespace gentoid\route;
 
 
+use gentoid\route\DataStructures\Coordinate;
+
 class InternalExtractorEdge {
 
 	/** @var int */
@@ -45,10 +47,10 @@ class InternalExtractorEdge {
 	/** @var boolean */
 	protected $isContraFlow = false;
 
-	/** @var Coordinate */
+	/** @var \gentoid\route\DataStructures\Coordinate */
 	protected $startCoord;
 
-	/** @var Coordinate */
+	/** @var \gentoid\route\DataStructures\Coordinate */
 	protected $targetCoord;
 
 	public function __construct() {
@@ -277,33 +279,33 @@ class InternalExtractorEdge {
 	}
 
 	/**
-	 * @return \gentoid\route\Coordinate
+	 * @return \gentoid\route\DataStructures\Coordinate
 	 */
 	public function getStartCoord() {
 		return $this->startCoord;
 	}
 
 	/**
-	 * @param \gentoid\route\Coordinate $startCoord
+	 * @param \gentoid\route\DataStructures\Coordinate $startCoord
 	 * @return InternalExtractorEdge
 	 */
-	public function setStartCoord(\gentoid\route\Coordinate $startCoord) {
+	public function setStartCoord(DataStructures\Coordinate $startCoord) {
 		$this->startCoord = $startCoord;
 		return $this;
 	}
 
 	/**
-	 * @return \gentoid\route\Coordinate
+	 * @return \gentoid\route\DataStructures\Coordinate
 	 */
 	public function getTargetCoord() {
 		return $this->targetCoord;
 	}
 
 	/**
-	 * @param \gentoid\route\Coordinate $targetCoord
+	 * @param \gentoid\route\DataStructures\Coordinate $targetCoord
 	 * @return InternalExtractorEdge
 	 */
-	public function setTargetCoord(\gentoid\route\Coordinate $targetCoord) {
+	public function setTargetCoord(DataStructures\Coordinate $targetCoord) {
 		$this->targetCoord = $targetCoord;
 		return $this;
 	}
