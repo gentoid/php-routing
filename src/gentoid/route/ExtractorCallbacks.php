@@ -56,9 +56,9 @@ class ExtractorCallbacks {
 				$w->setNameId($id);
 				$this->strings[$id] = $w->getName();
 			}
-			if ($w->getDirection() == Direction::OPPOSITE) {
+			if ($w->getDirection()->getValue() == Direction::OPPOSITE) {
 				$w->setPath(array_reverse($w->getPath()));
-				$w->setDirection(Direction::ONEWAY);
+				$w->getDirection()->setValue(Direction::ONEWAY);
 			}
 
 			$split_bidirectional_edge = ($w->getBackwardSpeed() > 0) && ($w->getSpeed() != $w->getBackwardSpeed());
@@ -66,7 +66,10 @@ class ExtractorCallbacks {
 			$osmId = $w->getId();
 			$path  = $w->getPath();
 			$type  = $w->getType();
-			$direction = ($split_bidirectional_edge) ? Direction::ONEWAY : $w->getDirection()->getValue();
+			$directionValue = ($split_bidirectional_edge) ? Direction::ONEWAY : $w->getDirection()->getValue();
+			if ($directionValue === null) {
+				$directionValue = Direction::NOT_SURE;
+			}
 			$speed = $w->getSpeed();
 			$nameId = $w->getNameId();
 			$roundabout = $w->getRoundabout();
@@ -74,7 +77,7 @@ class ExtractorCallbacks {
 			$isDurationSet = ($w->getDuration() > 0);
 			$isAccessRestricted = $w->getIsAccessRestricted();
 			for ($i = 0; $i < count($w->getPath()) - 1; $i++) {
-				$direction = new Direction($direction);
+				$direction = new Direction($directionValue);
 				$edge = new InternalExtractorEdge();
 				$edge->setOsmId($osmId)->setStart($path[$i])->setTarget($path[$i + 1])->setType($type)
 					->setDirection($direction)->setSpeed($speed)->setNameId($nameId)->setIsRoundabout($roundabout)
