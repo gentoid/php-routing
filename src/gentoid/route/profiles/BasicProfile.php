@@ -18,13 +18,11 @@ abstract class BasicProfile {
 
 	/**
 	 * @param \gentoid\route\ImportNode $n
-	 * @return mixed
 	 */
 	abstract public function nodeFunction(\gentoid\route\ImportNode $n);
 
 	/**
 	 * @param \gentoid\route\ExtractionWay $w
-	 * @return mixed
 	 */
 	abstract public function wayFunction(\gentoid\route\ExtractionWay $w);
 
