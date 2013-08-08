@@ -160,7 +160,7 @@ class InternalExtractorEdge {
 	 * @return InternalExtractorEdge
 	 */
 	public function setDirection(Direction $direction) {
-		$this->direction = intval($direction);
+		$this->direction = $direction;
 		return $this;
 	}
 
