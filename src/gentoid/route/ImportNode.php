@@ -4,7 +4,6 @@ namespace gentoid\route;
 
 
 class ImportNode extends Node {
-	use Tag;
 
 	/** @var array */
 	protected $keyVals = array();
@@ -29,6 +28,14 @@ class ImportNode extends Node {
 	 */
 	public function addKeyVal($key, $val) {
 		$this->keyVals[$key] = $val;
+	}
+
+	/**
+	 * @param string $key
+	 * @return mixed|null
+	 */
+	public function findValByKey($key) {
+		return (isset($this->keyVals->{$key})) ? $this->keyVals->{$key} : null;
 	}
 
 }
