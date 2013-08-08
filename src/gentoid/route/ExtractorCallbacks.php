@@ -48,11 +48,12 @@ class ExtractorCallbacks {
 				return;
 			}
 
-			if ($key = array_search($w->getName(), $this->strings)) {
+			if (is_int($key = array_search($w->getName(), $this->strings))) {
 				$w->setNameId($key);
 			}
 			else {
 				$id = count($this->external->getNameVector());
+				$this->external->addName($w->getName());
 				$w->setNameId($id);
 				$this->strings[$id] = $w->getName();
 			}
