@@ -291,7 +291,7 @@ class ExtractionContainers {
 	}
 
 	/**
-	 * @param \string[] $name
+	 * @param \string $name
 	 */
 	public function addName($name) {
 		$this->nameVector[] = $name;
