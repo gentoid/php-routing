@@ -3,12 +3,20 @@
 namespace gentoid\route;
 
 
+use gentoid\utils\LogUtil;
+
 class XMLParser extends BaseParser {
 
 	protected $xml;
 
+	/**
+	 * @param string $filename
+	 * @param ExtractorCallbacks $ec
+	 * @param profiles\BasicProfile $profile
+	 */
 	public function __construct($filename, ExtractorCallbacks $ec, \gentoid\route\profiles\BasicProfile $profile) {
 		parent::__construct($ec, $profile);
+		LogUtil::info('extracting data from input file '.$filename);
 		$this->xml = new \SimpleXMLElement(file_get_contents($filename));
 	}
 

@@ -3,6 +3,8 @@
 namespace gentoid\route;
 
 
+use gentoid\utils\LogUtil;
+
 class Extractor {
 
 	/** @var array */
@@ -12,6 +14,7 @@ class Extractor {
 	protected $profiles;
 
 	public function __construct($file) {
+		$earlierTime = microtime(true);
 		$this->init();
 		$isPBF = is_int(strpos('osm.pbf', $file));
 
@@ -28,10 +31,16 @@ class Extractor {
 				$parser = new XMLParser($file, $extractCallBacks, new $profile);
 			}
 
+			$time = microtime(true);
+			LogUtil::info('Parsing in progress...');
 			$parser->parse();
+			$timeDiff = microtime(true) - $time;
+			LogUtil::info('Parsing finished after  '.$timeDiff.' seconds');
 		}
 
 		$containers->prepareData($file.'.phprd', $file.'.phprd.restrictions');
+		$timeDiff = microtime(true) - $earlierTime;
+		LogUtil::info('finished after  '.$timeDiff.' seconds');
 	}
 
 	/**

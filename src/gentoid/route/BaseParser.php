@@ -4,6 +4,7 @@ namespace gentoid\route;
 
 
 use gentoid\route\profiles\BasicProfile;
+use gentoid\utils\LogUtil;
 
 abstract class BaseParser {
 
@@ -55,6 +56,12 @@ abstract class BaseParser {
 
 	protected function readRestrictionExceptions() {
 		$this->profile->getExceptions($this->restriction_exceptions);
+		if ($count = count($this->restriction_exceptions)) {
+			LogUtil::info('Found '.$count.' exceptions to turn restriction');
+		}
+		else {
+			LogUtil::info('Found no exceptions to turn restrictions');
+		}
 	}
 
 	/**

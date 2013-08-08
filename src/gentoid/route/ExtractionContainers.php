@@ -4,6 +4,7 @@ namespace gentoid\route;
 
 
 use gentoid\route\DataStructures\Coordinate;
+use gentoid\utils\LogUtil;
 
 class ExtractionContainers {
 
@@ -33,12 +34,38 @@ class ExtractionContainers {
 		$usedNodeCounter = 0;
 		$usedEdgeCounter = 0;
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting used nodes           ...');
 		usort($this->usedNodeIDs, array('\\gentoid\\route\\NodeID', 'cmp'));
-		NodeID::unique($this->usedNodeIDs);
-		usort($this->allNodes, array('\\gentoid\\route\\Node', 'CmpNodeByID'));
-		usort($this->wayStartEndVector, array('\\gentoid\\route\\WayIDStartAndEndEdge', 'CmpWayByID'));
-		usort($this->restrictionsVector, array('\\gentoid\\route\\RawRestrictionContainer', 'CmpRestrictionContainerByFrom'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Erasing duplicate nodes      ...');
+		NodeID::unique($this->usedNodeIDs);
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting all nodes            ...');
+		usort($this->allNodes, array('\\gentoid\\route\\Node', 'CmpNodeByID'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting used ways            ...');
+		usort($this->wayStartEndVector, array('\\gentoid\\route\\WayIDStartAndEndEdge', 'CmpWayByID'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting restrictions. by from...');
+		usort($this->restrictionsVector, array('\\gentoid\\route\\RawRestrictionContainer', 'CmpRestrictionContainerByFrom'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Fixing restriction starts    ...');
 		$i = $k = 0;
 		while (isset($this->wayStartEndVector[$i]) && isset($this->restrictionsVector[$k])) {
 			$wayStartEndEdge      = &$this->wayStartEndVector[$i];
@@ -71,11 +98,19 @@ class ExtractionContainers {
 
 			++$k;
 		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting restrictions. by to  ...');
 		usort($this->restrictionsVector, array('\\gentoid\\route\\RawRestrictionContainer', 'CmpRestrictionContainerByTo'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$usableRestrictionsCounter = 0;
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Fixing restriction ends      ...');
 		$i = $k = 0;
 		while (isset($this->wayStartEndVector[$i]) && isset($this->restrictionsVector[$k])) {
 			$wayStartEndEdge      = &$this->wayStartEndVector[$i];
@@ -113,6 +148,10 @@ class ExtractionContainers {
 
 			++$k;
 		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
+		LogUtil::info('usable restrictions: '.$usableRestrictionsCounter);
 
 		$fd = fopen($restrictionsFileName, 'w');
 		fwrite($fd, pack('L', $usableRestrictionsCounter));
@@ -129,6 +168,8 @@ class ExtractionContainers {
 		$fd = fopen($outputFileName, 'w');
 		fwrite($fd, pack('L', $usedNodeCounter));
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Confirming/Writing used nodes...');
 		$i = $k = 0;
 		while (isset($this->usedNodeIDs[$i]) && isset($this->allNodes[$k])) {
 			$usedNodeID = &$this->usedNodeIDs[$i];
@@ -149,14 +190,26 @@ class ExtractionContainers {
 				++$usedNodeCounter;
 			}
 		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] setting number of nodes     ...');
 		$pos = ftell($fd);
 		fseek($fd, 0);
 		fwrite($fd, pack('L', $usedNodeCounter));
 		fseek($fd, $pos);
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting edges by start      ...');
 		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByStartID'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Setting start coords        ...');
 		fwrite($fd, pack('L', $usedNodeCounter));
 
 		$i = $k = 0;
@@ -178,9 +231,17 @@ class ExtractionContainers {
 				++$i;
 			}
 		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Sorting edges by target        ...');
 		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByTargetID'));
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] Setting target coords          ...');
 		$i = $k = 0;
 		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
 			$edge = &$this->allEdges[$i];
@@ -228,11 +289,19 @@ class ExtractionContainers {
 				++$i;
 			}
 		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] setting number of edges          ...');
 		fseek($fd, $pos);
 		fwrite($fd, pack('L', $usedEdgeCounter));
 		fclose($fd);
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] writing street name index        ...');
 		$nameOutFileName = $outputFileName . '.names';
 		$fd = fopen($nameOutFileName, 'w');
 		fwrite($fd, pack('L', count($this->nameVector)));
@@ -241,6 +310,9 @@ class ExtractionContainers {
 			fwrite($fd, pack('a'.strlen($name), $name));
 		}
 		fclose($fd);
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+		LogUtil::info('Processed '.$usedNodeCounter.' nodes and '.$usedEdgeCounter.' edges');
 	}
 
 	/**
