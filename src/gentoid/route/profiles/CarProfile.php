@@ -5,23 +5,23 @@ namespace gentoid\route\profiles;
 
 class CarProfile extends BasicProfile {
 
-	protected $barrier_whitelist = array('cattle_grid' => true, 'border_control' => true, 'toll_booth' => true,
-		'sally_port' => true, 'gate' => true, 'no' => true);
+	protected $barrier_whitelist = array('cattle_grid', 'border_control', 'toll_booth',
+		'sally_port', 'gate', 'no');
 
-	protected $access_tag_whitelist = array('yes' => true, 'motorcar' => true, 'motor_vehicle' => true,
-		'vehicle' => true, 'permissive' => true, 'designated' => true);
+	protected $access_tag_whitelist = array('yes', 'motorcar', 'motor_vehicle',
+		'vehicle', 'permissive', 'designated');
 
-	protected $access_tag_blacklist = array('no' => true, 'private' => true, 'agricultural' => true, 'forestry' => true);
+	protected $access_tag_blacklist = array('no', 'private', 'agricultural', 'forestry');
 
-	protected $access_tag_restricted = array('destination' => true, 'delivery' => true);
+	protected $access_tag_restricted = array('destination', 'delivery');
 
 	protected $access_tags = array('motorcar', 'motor_vehicle', 'vehicle');
 
 	protected $access_tags_hierarchy = array('motorcar', 'motor_vehicle', 'vehicle', 'access');
 
-	protected $service_tag_restricted = array('parking_aisle' => true);
+	protected $service_tag_restricted = array('parking_aisle');
 
-	protected $ignore_in_grid = array('ferry' => true);
+	protected $ignore_in_grid = array('ferry');
 
 	protected $restriction_exception_tags = array('motorcar', 'motor_vehicle', 'vehicle');
 
