@@ -7,9 +7,6 @@ class ImportNode extends Node {
 	use Tag;
 
 	/** @var array */
-	protected $attributes = array();
-
-	/** @var array */
 	protected $keyVals = array();
 
 	public function clear() {
@@ -17,17 +14,6 @@ class ImportNode extends Node {
 		$this->nodeId->setValue('0');
 		$this->bollard = false;
 		$this->trafficLight = false;
-	}
-
-	/**
-	 * @param string $attr
-	 * @return mixed
-	 */
-	public function findAttribute($attr) {
-		if (isset($this->attributes[$attr])) {
-			return $this->attributes[$attr];
-		}
-		return null;
 	}
 
 	/**
