@@ -8,8 +8,7 @@ if (PHP_SAPI == 'cli') {
 		$command->parseOptions($argv, $argc);
 
 		if ($osmFile = $command->getOption('extract')) {
-			$extractor = new \gentoid\route\Extractor();
-			$extractor->extract($osmFile->getValue());
+			$extractor = new \gentoid\route\Extractor($osmFile->getValue());
 		}
 	} catch (Exception $e) {
 		echo "Error: " . $e->getMessage() . PHP_EOL;
