@@ -14,7 +14,7 @@ trait Tag {
 	 * @return mixed|null
 	 */
 	public function findValByKey($key) {
-		return (isset($this->keyVals[$key])) ? $this->keyVals[$key] : null;
+		return (isset($this->keyVals->{$key})) ? $this->keyVals->{$key} : null;
 	}
 
 }
