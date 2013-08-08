@@ -8,7 +8,6 @@ namespace gentoid\route;
 
 
 class ExtractionWay {
-	use Tag;
 
 	/** @var Direction */
 	protected $direction;
@@ -88,7 +87,7 @@ class ExtractionWay {
 	 * @param \gentoid\route\Direction $direction
 	 * @return ExtractionWay
 	 */
-	public function setDirection($direction) {
+	public function setDirection(\gentoid\route\Direction $direction) {
 		$this->direction = $direction;
 		return $this;
 	}
@@ -121,7 +120,7 @@ class ExtractionWay {
 	 * @return ExtractionWay
 	 */
 	public function setNameId($nameId) {
-		$this->nameId = $nameId;
+		$this->nameId = intval($nameId);
 		return $this;
 	}
 
@@ -331,6 +330,16 @@ class ExtractionWay {
 	public function addKeyVal($key, $val) {
 		$this->keyVals[$key] = $val;
 		return $this;
+	}
+
+	/**
+	 * @param string $key
+	 * @return mixed|null
+	 */
+	public function findValByKey($key) {
+		return (is_int(strpos($key, ':'))) ?
+			(isset($this->keyVals->{$key})) ? $this->keyVals->{$key} : null
+			: (isset($this->keyVals[$key])) ? $this->keyVals[$key] : null;
 	}
 
 }
