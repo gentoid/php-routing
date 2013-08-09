@@ -35,14 +35,14 @@ class ExtractionContainers {
 		$usedEdgeCounter = 0;
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Sorting used nodes           ...');
-		usort($this->usedNodeIDs, array('\\gentoid\\route\\NodeID', 'cmp'));
+		LogUtil::infoAsIs('[extractor] Erasing duplicate nodes      ...');
+		NodeID::unique($this->usedNodeIDs);
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Erasing duplicate nodes      ...');
-		NodeID::unique($this->usedNodeIDs);
+		LogUtil::infoAsIs('[extractor] Sorting used nodes           ...');
+		usort($this->usedNodeIDs, array('\\gentoid\\route\\NodeID', 'cmp'));
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
