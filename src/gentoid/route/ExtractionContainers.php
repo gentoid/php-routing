@@ -194,7 +194,7 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] setting number of nodes     ...');
+		LogUtil::infoAsIs('[extractor] setting number of nodes      ...');
 		$pos = ftell($fd);
 		fseek($fd, 0);
 		fwrite($fd, pack('L', $usedNodeCounter));
@@ -203,13 +203,13 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Sorting edges by start      ...');
+		LogUtil::infoAsIs('[extractor] Sorting edges by start       ...');
 		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByStartID'));
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Setting start coords        ...');
+		LogUtil::infoAsIs('[extractor] Setting start coords         ...');
 		fwrite($fd, pack('L', $usedNodeCounter));
 
 		$i = $k = 0;
@@ -235,13 +235,13 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Sorting edges by target        ...');
+		LogUtil::infoAsIs('[extractor] Sorting edges by target      ...');
 		usort($this->allEdges, array('\\gentoid\\route\\InternalExtractorEdge', 'CmpEdgeByTargetID'));
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] Setting target coords          ...');
+		LogUtil::infoAsIs('[extractor] Setting target coords        ...');
 		$i = $k = 0;
 		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
 			$edge = &$this->allEdges[$i];
@@ -293,7 +293,7 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] setting number of edges          ...');
+		LogUtil::infoAsIs('[extractor] setting number of edges      ...');
 		fseek($fd, $pos);
 		fwrite($fd, pack('L', $usedEdgeCounter));
 		fclose($fd);
@@ -301,7 +301,7 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] writing street name index        ...');
+		LogUtil::infoAsIs('[extractor] writing street name index    ...');
 		$nameOutFileName = $outputFileName . '.names';
 		$fd = fopen($nameOutFileName, 'w');
 		fwrite($fd, pack('L', count($this->nameVector)));
