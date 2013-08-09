@@ -1,5 +1,5 @@
 {
-    "name": "gentoid/php-route-daemon",
+    "name": "gentoid/php-routing",
     "description": "PHP route daemon similar to OSRM",
     "version": "0.0.1",
     "minimum-stability": "dev",
