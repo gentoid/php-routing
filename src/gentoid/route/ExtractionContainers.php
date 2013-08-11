@@ -4,6 +4,7 @@ namespace gentoid\route;
 
 
 use gentoid\route\DataStructures\Coordinate;
+use gentoid\utils\DB;
 use gentoid\utils\LogUtil;
 
 class ExtractionContainers {
@@ -25,6 +26,13 @@ class ExtractionContainers {
 
 	/** @var \gentoid\route\WayIDStartAndEndEdge[] */
 	protected $wayStartEndVector = array();
+
+	/** @var \PDO */
+	protected $dbh;
+
+	public function __construct() {
+		$this->dbh = DB::getInstance()->getDbh();
+	}
 
 	/**
 	 * @param string $outputFileName
@@ -153,24 +161,12 @@ class ExtractionContainers {
 
 		LogUtil::info('usable restrictions: '.$usableRestrictionsCounter);
 
-		$fd = fopen($restrictionsFileName, 'w');
-		fwrite($fd, pack('L', $usableRestrictionsCounter));
-
-		for ($k = 0; $k < count($this->restrictionsVector); $k++) {
-			if (   $this->restrictionsVector[$k]->getRestriction()->getFromNode()->getValue() != NodeID::DEFAULT_VALUE
-				&& $this->restrictionsVector[$k]->getRestriction()->getToNode()  ->getValue() != NodeID::DEFAULT_VALUE) {
-				fwrite($fd, $this->restrictionsVector[$k]->getRestriction()->pack());
-			}
-		}
-
-		fclose($fd);
-
-		$fd = fopen($outputFileName, 'w');
-		fwrite($fd, pack('L', $usedNodeCounter));
+		$this->dbh->query('delete from phpr_nodes');
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] Confirming/Writing used nodes...');
-		$i = $k = 0;
+		$i = $k = $counter = 0;
+		$nodes = array();
 		while (isset($this->usedNodeIDs[$i]) && isset($this->allNodes[$k])) {
 			$usedNodeID = &$this->usedNodeIDs[$i];
 			$node = &$this->allNodes[$k];
@@ -184,21 +180,38 @@ class ExtractionContainers {
 				continue;
 			}
 			if ($usedNodeID->getValue() == $node->getNodeId()->getValue()) {
-				fwrite($fd, $node->pack());
+				if ($counter >= 100) {
+					$this->insertNodes($nodes);
+					$nodes = array();
+					$counter = 0;
+				}
+				$counter++;
+				$nodes[] = $node->getNodeId()->getValue();
 				++$i;
 				++$k;
 				++$usedNodeCounter;
 			}
 		}
-		$timeDiff = microtime(true) - $time;
-		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+		if ($counter > 0) {
+			$this->insertNodes($nodes);
+		}
 
-		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] setting number of nodes      ...');
-		$pos = ftell($fd);
-		fseek($fd, 0);
-		fwrite($fd, pack('L', $usedNodeCounter));
-		fseek($fd, $pos);
+		$this->dbh->query('delete from phpr_restrictions');
+
+		for ($k = 0; $k < count($this->restrictionsVector); $k++) {
+			if (   $this->restrictionsVector[$k]->getRestriction()->getFromNode()->getValue() != NodeID::DEFAULT_VALUE
+				&& $this->restrictionsVector[$k]->getRestriction()->getToNode()  ->getValue() != NodeID::DEFAULT_VALUE) {
+				$restriction = $this->restrictionsVector[$k]->getRestriction();
+				$isOnly = ($restriction->getIsOnly()) ? 'true' : 'false';
+				$this->dbh->query("insert into phpr_restrictions (via_node, to_node, from_node, is_only) values (
+					(select id from phpr_nodes where osm_node_id = '{$restriction->getViaNode()->getValue()}'),
+					(select id from phpr_nodes where osm_node_id = '{$restriction->getToNode()->getValue()}'),
+					(select id from phpr_nodes where osm_node_id = '{$restriction->getFromNode()->getValue()}'),
+					{$isOnly}
+				)");
+			}
+		}
+
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
@@ -210,7 +223,6 @@ class ExtractionContainers {
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] Setting start coords         ...');
-		fwrite($fd, pack('L', $usedNodeCounter));
 
 		$i = $k = 0;
 		while(isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
@@ -242,7 +254,9 @@ class ExtractionContainers {
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] Setting target coords        ...');
-		$i = $k = 0;
+		$i = $k = $counter = 0;
+		$values = array();
+		$this->dbh->query('delete from phpr_edges');
 		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
 			$edge = &$this->allEdges[$i];
 			$node = &$this->allNodes[$k];
@@ -265,54 +279,75 @@ class ExtractionContainers {
 					$weight = ($distance * 10) / ($edge->getSpeed() * 3.6);
 					$weight = max(1, round($edge->getIsDurationSet() ? $edge->getSpeed() : $weight), PHP_ROUND_HALF_UP);
 					$distance = max(1, $distance);
-					$zero = '0';
-					$one  = '1';
-
-					fwrite($fd, $edge->getStart() ->pack());
-					fwrite($fd, $edge->getTarget()->pack());
-					fwrite($fd, pack('L', $distance));
+					$direction = 'false';
 
 					switch($edge->getDirection()->getValue()) {
-						case Direction::NOT_SURE:
-						case Direction::BIDIRECTIONAL:
-							fwrite($fd, pack('a1', $zero));
-							break;
+//						case Direction::NOT_SURE:
+//						case Direction::BIDIRECTIONAL:
+//						$direction = 'false';
+//							break;
 						case Direction::ONEWAY:
 						case Direction::OPPOSITE:
-							fwrite($fd, pack('a1', $one));
+							$direction = 'true';
 					}
 
-					fwrite($fd, pack('L', $weight));
-					fwrite($fd, $edge->pack());
 					++$usedEdgeCounter;
+					$isRoundabout = ($edge->getIsRoundabout()) ? 'true' : 'false';
+					$ignoreInGrid = ($edge->getIgnoreInGrid()) ? 'true' : 'false';
+					$isAccessRestricted = ($edge->getIsAccessRestricted()) ? 'true' : 'false';
+					$isContraFlow = ($edge->getIsContraFlow()) ? 'true' : 'false';
+
+					if ($counter >= 200) {
+						$this->insertEdges($values);
+						$counter = 0;
+						$values = array();
+					}
+					$values[] = "((select id from phpr_nodes where osm_node_id = '{$edge->getStart()->getValue()}'), (select id from phpr_nodes where osm_node_id = '{$edge->getTarget()->getValue()}'), {$distance}, {$weight}, {$direction}, {$edge->getType()}, {$edge->getNameId()}, {$isRoundabout}, {$ignoreInGrid}, {$isAccessRestricted}, {$isContraFlow})";
+					$counter++;
 				}
 				++$i;
 			}
+		}
+		if ($counter > 0) {
+			$this->insertEdges($values);
 		}
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] setting number of edges      ...');
-		fseek($fd, $pos);
-		fwrite($fd, pack('L', $usedEdgeCounter));
-		fclose($fd);
+
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] writing street name index    ...');
-		$nameOutFileName = $outputFileName . '.names';
-		$fd = fopen($nameOutFileName, 'w');
-		fwrite($fd, pack('L', count($this->nameVector)));
+
+		$this->dbh->query('delete from phpr_names');
+
 		foreach ($this->nameVector as $name) {
-			fwrite($fd, pack('L', strlen($name)));
-			fwrite($fd, pack('a'.strlen($name), $name));
+			$this->dbh->query("insert into phpr_names (name) values ('$name')");
 		}
-		fclose($fd);
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 		LogUtil::info('Processed '.$usedNodeCounter.' nodes and '.$usedEdgeCounter.' edges');
+	}
+
+	protected function insertNodes(array $values) {
+		if (empty($values)) {
+			return;
+		}
+		$values = implode("'), ('", $values);
+		$this->dbh->query("insert into phpr_nodes (osm_node_id) values ('{$values}')");
+	}
+
+	protected function insertEdges(array $values) {
+		if (empty($values)) {
+			return;
+		}
+		$values = implode(", ", $values);
+		$this->dbh->query("insert into phpr_edges (node_id_start, node_id_target, distance, weight, direction, type, name_id, is_roundabout, ignore_in_grid, is_access_restricted, is_contra_flow) values {$values}");
+//		var_dump($this->dbh->errorInfo());
 	}
 
 	/**
