@@ -66,7 +66,7 @@ class InternalExtractorEdge {
 	 * @param InternalExtractorEdge $b
 	 * @return int
 	 */
-	public function CmpEdgeByStartID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
+	public static function CmpEdgeByStartID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
 		return bccomp($a->getStart()->getValue(), $b->getStart()->getValue());
 	}
 
@@ -75,7 +75,7 @@ class InternalExtractorEdge {
 	 * @param InternalExtractorEdge $b
 	 * @return int
 	 */
-	public function CmpEdgeByTargetID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
+	public static function CmpEdgeByTargetID(InternalExtractorEdge $a, InternalExtractorEdge $b) {
 		return bccomp($a->getTarget()->getValue(), $b->getTarget()->getValue());
 	}
 
@@ -312,4 +312,3 @@ class InternalExtractorEdge {
 
 
 }
- 
