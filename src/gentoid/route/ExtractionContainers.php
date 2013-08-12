@@ -186,7 +186,7 @@ class ExtractionContainers {
 					$counter = 0;
 				}
 				$counter++;
-				$nodes[] = $node->getNodeId()->getValue();
+				$nodes[] = "({$node->getNodeId()->getValue()}, {$node->getCoordinate()->getLat()}, {$node->getCoordinate()->getLon()})";
 				++$i;
 				++$k;
 				++$usedNodeCounter;
@@ -337,8 +337,8 @@ class ExtractionContainers {
 		if (empty($values)) {
 			return;
 		}
-		$values = implode("'), ('", $values);
-		$this->dbh->query("insert into phpr_nodes (osm_node_id) values ('{$values}')");
+		$values = implode(", ", $values);
+		$this->dbh->query("insert into phpr_nodes (osm_node_id, lat, lon) values ({$values})");
 	}
 
 	protected function insertEdges(array $values) {
