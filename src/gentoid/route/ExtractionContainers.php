@@ -35,10 +35,9 @@ class ExtractionContainers {
 	}
 
 	/**
-	 * @param string $outputFileName
-	 * @param string $restrictionsFileName
+	 * @return void
 	 */
-	public function prepareData($outputFileName, $restrictionsFileName) {
+	public function prepareData() {
 		$usedNodeCounter = 0;
 		$usedEdgeCounter = 0;
 
