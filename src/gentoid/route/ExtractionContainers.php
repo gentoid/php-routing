@@ -337,7 +337,7 @@ class ExtractionContainers {
 			return;
 		}
 		$values = implode(", ", $values);
-		$this->dbh->query("insert into phpr_nodes (osm_node_id, lat, lon) values ({$values})");
+		$this->dbh->query("insert into phpr_nodes (osm_node_id, lat, lon) values {$values}");
 	}
 
 	protected function insertEdges(array $values) {
