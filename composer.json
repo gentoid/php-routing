@@ -13,7 +13,8 @@
         "psr-0": { "gentoid\\": "src/" }
     },
     "require": {
-        "symfony/yaml": "v2.3.2"
+        "symfony/yaml": "v2.3.2",
+        "ruckusing/ruckusing-migrations": "0.1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.23"
