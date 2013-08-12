@@ -289,16 +289,16 @@ class ExtractionContainers {
 					$weight = ($distance * 10) / ($edge->getSpeed() * 3.6);
 					$weight = max(1, round($edge->getIsDurationSet() ? $edge->getSpeed() : $weight), PHP_ROUND_HALF_UP);
 					$distance = max(1, $distance);
-					$direction = 'false';
+					$direction = 0;
 
 					switch($edge->getDirection()->getValue()) {
-//						case Direction::NOT_SURE:
-//						case Direction::BIDIRECTIONAL:
-//						$direction = 'false';
-//							break;
+						case Direction::NOT_SURE:
+						case Direction::BIDIRECTIONAL:
+						$direction = 0;
+							break;
 						case Direction::ONEWAY:
 						case Direction::OPPOSITE:
-							$direction = 'true';
+							$direction = 1;
 					}
 
 					++$usedEdgeCounter;
