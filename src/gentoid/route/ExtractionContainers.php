@@ -158,6 +158,17 @@ class ExtractionContainers {
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
+		$time = microtime(true);
+		LogUtil::infoAsIs('[extractor] writing street name index    ...');
+
+		$this->dbh->query('delete from phpr_names');
+
+		foreach ($this->nameVector as $name) {
+			$this->dbh->query("insert into phpr_names (name) values ('$name')");
+		}
+		$timeDiff = microtime(true) - $time;
+		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
+
 		LogUtil::info('usable restrictions: '.$usableRestrictionsCounter);
 
 		$this->dbh->query('delete from phpr_nodes');
@@ -301,7 +312,7 @@ class ExtractionContainers {
 						$counter = 0;
 						$values = array();
 					}
-					$values[] = "((select id from phpr_nodes where osm_node_id = '{$edge->getStart()->getValue()}'), (select id from phpr_nodes where osm_node_id = '{$edge->getTarget()->getValue()}'), {$distance}, {$weight}, {$direction}, {$edge->getType()}, {$edge->getNameId()}, {$isRoundabout}, {$ignoreInGrid}, {$isAccessRestricted}, {$isContraFlow})";
+					$values[] = "((select id from phpr_nodes where osm_node_id = '{$edge->getStart()->getValue()}'), (select id from phpr_nodes where osm_node_id = '{$edge->getTarget()->getValue()}'), {$distance}, {$weight}, {$direction}, {$edge->getType()}, (select  id from phpr_names where name = '{$edge->getName()}'), {$isRoundabout}, {$ignoreInGrid}, {$isAccessRestricted}, {$isContraFlow})";
 					$counter++;
 				}
 				++$i;
@@ -319,16 +330,6 @@ class ExtractionContainers {
 		$timeDiff = microtime(true) - $time;
 		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 
-		$time = microtime(true);
-		LogUtil::infoAsIs('[extractor] writing street name index    ...');
-
-		$this->dbh->query('delete from phpr_names');
-
-		foreach ($this->nameVector as $name) {
-			$this->dbh->query("insert into phpr_names (name) values ('$name')");
-		}
-		$timeDiff = microtime(true) - $time;
-		LogUtil::infoAsIs('ok, after '.$timeDiff.'s');
 		LogUtil::info('Processed '.$usedNodeCounter.' nodes and '.$usedEdgeCounter.' edges');
 	}
 

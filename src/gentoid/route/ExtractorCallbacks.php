@@ -72,7 +72,7 @@ class ExtractorCallbacks {
 				$directionValue = Direction::NOT_SURE;
 			}
 			$speed = $w->getSpeed();
-			$nameId = $w->getNameId();
+			$name = $w->getName();
 			$roundabout = $w->getRoundabout();
 			$ignoreInGrid = $w->getIgnoreInGrid();
 			$isDurationSet = ($w->getDuration() > 0);
@@ -81,7 +81,7 @@ class ExtractorCallbacks {
 				$direction = new Direction($directionValue);
 				$edge = new InternalExtractorEdge();
 				$edge->setOsmId($osmId)->setStart($path[$i])->setTarget($path[$i + 1])->setType($type)
-					->setDirection($direction)->setSpeed($speed)->setNameId($nameId)->setIsRoundabout($roundabout)
+					->setDirection($direction)->setSpeed($speed)->setName($name)->setIsRoundabout($roundabout)
 					->setIgnoreInGrid($ignoreInGrid)->setIsDurationSet($isDurationSet)->setIsAccessRestricted($isAccessRestricted);
 				$this->external->addEdge($edge);
 				$this->external->addUsedNodeID($path[$i]);
@@ -102,7 +102,7 @@ class ExtractorCallbacks {
 					$edge = new InternalExtractorEdge();
 					$direction = new Direction(Direction::ONEWAY);
 					$edge->setOsmId($osmId)->setStart($path[$i])->setTarget($path[$i + 1])->setType($type)
-						->setDirection($direction)->setSpeed($speed)->setNameId($nameId)->setIsRoundabout($roundabout)
+						->setDirection($direction)->setSpeed($speed)->setName($name)->setIsRoundabout($roundabout)
 						->setIgnoreInGrid($ignoreInGrid)->setIsDurationSet($isDurationSet)
 						->setIsAccessRestricted($isAccessRestricted)->setIsContraFlow($isContraFlow);
 					$this->external->addEdge($edge);

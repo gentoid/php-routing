@@ -29,8 +29,8 @@ class InternalExtractorEdge {
 	/** @var float */
 	protected $speed = 0;
 
-	/** @var int */
-	protected $nameId = 0;
+	/** @var string */
+	protected $name = '';
 
 	/** @var boolean */
 	protected $isRoundabout = false;
@@ -83,7 +83,7 @@ class InternalExtractorEdge {
 	 * @return string
 	 */
 	public function pack() {
-		return pack('L', $this->type) . pack('L', $this->nameId) . pack('S', $this->isRoundabout) . pack('S', $this->ignoreInGrid) . pack('S', $this->isAccessRestricted) . pack('S', $this->isContraFlow);
+		return pack('L', $this->type) . pack('L', $this->name) . pack('S', $this->isRoundabout) . pack('S', $this->ignoreInGrid) . pack('S', $this->isAccessRestricted) . pack('S', $this->isContraFlow);
 	}
 
 	/**
@@ -183,18 +183,18 @@ class InternalExtractorEdge {
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function getNameId() {
-		return $this->nameId;
+	public function getName() {
+		return $this->name;
 	}
 
 	/**
-	 * @param int $nameId
+	 * @param string $name
 	 * @return InternalExtractorEdge
 	 */
-	public function setNameId($nameId) {
-		$this->nameId = intval($nameId);
+	public function setName($name) {
+		$this->name = $name;
 		return $this;
 	}
 
