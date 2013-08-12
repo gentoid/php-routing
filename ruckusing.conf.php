@@ -25,11 +25,11 @@ return array(
 
         ),
 
-        'migrations_dir' => array('default' => RUCKUSING_WORKING_BASE . '/migrations'),
+        'migrations_dir' => array('default' => RUCKUSING_WORKING_BASE . '/migrations/migrations'),
 
-        'db_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'db',
+        'db_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'migrations/db',
 
-        'log_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'logs',
+        'log_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'migrations/logs',
 
         'ruckusing_base' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor/ruckusing/ruckusing-migrations'
 
