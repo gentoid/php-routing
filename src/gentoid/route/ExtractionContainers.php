@@ -312,7 +312,7 @@ class ExtractionContainers {
 						$counter = 0;
 						$values = array();
 					}
-					$values[] = "((select id from phpr_nodes where osm_node_id = '{$edge->getStart()->getValue()}'), (select id from phpr_nodes where osm_node_id = '{$edge->getTarget()->getValue()}'), {$distance}, {$weight}, {$direction}, {$edge->getType()}, (select  id from phpr_names where name = '{$edge->getName()}'), {$isRoundabout}, {$ignoreInGrid}, {$isAccessRestricted}, {$isContraFlow})";
+					$values[] = "((select id from phpr_nodes where osm_node_id = '{$edge->getStart()->getValue()}'), (select id from phpr_nodes where osm_node_id = '{$edge->getTarget()->getValue()}'), {$distance}, {$weight}, {$direction}, {$edge->getType()}, (select  id from phpr_names where name = '{$edge->getName()}'), {$isRoundabout}, {$ignoreInGrid}, {$isAccessRestricted}, {$isContraFlow}, {$edge->getOsmId()})";
 					$counter++;
 				}
 				++$i;
@@ -346,7 +346,7 @@ class ExtractionContainers {
 			return;
 		}
 		$values = implode(", ", $values);
-		$this->dbh->query("insert into phpr_edges (node_id_start, node_id_target, distance, weight, direction, type, name_id, is_roundabout, ignore_in_grid, is_access_restricted, is_contra_flow) values {$values}");
+		$this->dbh->query("insert into phpr_edges (node_id_start, node_id_target, distance, weight, direction, type, name_id, is_roundabout, ignore_in_grid, is_access_restricted, is_contra_flow, osm_way_id) values {$values}");
 //		var_dump($this->dbh->errorInfo());
 	}
 
