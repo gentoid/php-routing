@@ -9,7 +9,7 @@ class RawRestrictionContainer {
 
 	const DEFAULT_VALUE = -1;
 
-	/**@var \gentoid\route\Restriction */
+	/**@var \gentoid\route\TurnRestriction */
 	protected $restriction;
 
 	/** @var int */
@@ -22,7 +22,7 @@ class RawRestrictionContainer {
 	protected $viaNode;
 
 	public function __construct() {
-		$this->restriction = new Restriction();
+		$this->restriction = new TurnRestriction();
 		$this->viaNode = new NodeID();
 	}
 
@@ -45,17 +45,17 @@ class RawRestrictionContainer {
 	}
 
 	/**
-	 * @return \gentoid\route\Restriction
+	 * @return \gentoid\route\TurnRestriction
 	 */
 	public function getRestriction() {
 		return $this->restriction;
 	}
 
 	/**
-	 * @param \gentoid\route\Restriction $restriction
+	 * @param \gentoid\route\TurnRestriction $restriction
 	 * @return \gentoid\route\RawRestrictionContainer
 	 */
-	public function setRestriction(\gentoid\route\Restriction $restriction) {
+	public function setRestriction(\gentoid\route\TurnRestriction $restriction) {
 		$this->restriction = $restriction;
 		return $this;
 	}

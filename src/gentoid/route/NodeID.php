@@ -45,4 +45,52 @@ class NodeID extends BigInt {
 		return pack('a20', $this->value);
 	}
 
+	/**
+	 * @param int $value
+	 * @return bool
+	 */
+	public function lessThanInt($value) {
+		return bccomp($this->value, $value) === -1;
+	}
+
+	/**
+	 * @param int $value
+	 * @return bool
+	 */
+	public function moreThanInt($value) {
+		return bccomp($this->value, $value) === 1;
+	}
+
+	/**
+	 * @param $value
+	 * @return bool
+	 */
+	public function isEqualInt($value) {
+		return bccomp($this->value, $value) === 0;
+	}
+
+	/**
+	 * @param NodeID $n
+	 * @return bool
+	 */
+	public function lessThan(NodeID $n) {
+		return bccomp($this->value, $n->getValue()) === -1;
+	}
+
+	/**
+	 * @param NodeID $n
+	 * @return bool
+	 */
+	public function moreThan(NodeID $n) {
+		return bccomp($this->value, $n->getValue()) === 1;
+	}
+
+	/**
+	 * @param NodeID $n
+	 * @return bool
+	 */
+	public function isEqual(NodeID $n) {
+		return bccomp($this->value, $n->getValue()) === 0;
+	}
+
 }

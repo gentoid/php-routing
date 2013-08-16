@@ -3,7 +3,7 @@
 namespace gentoid\route;
 
 
-class Restriction {
+class TurnRestriction {
 
 	/** @var \gentoid\route\NodeID */
 	protected $viaNode;
@@ -24,11 +24,11 @@ class Restriction {
 	}
 
 	/**
-	 * @param Restriction $a
-	 * @param Restriction $b
+	 * @param TurnRestriction $a
+	 * @param TurnRestriction $b
 	 * @return bool
 	 */
-	public static function CmpRestrictionByFrom(Restriction $a, Restriction $b) {
+	public static function CmpRestrictionByFrom(TurnRestriction $a, TurnRestriction $b) {
 		return bccomp($a->getFromNode()->getValue(), $b->getFromNode()->getValue()) === -1;
 	}
 
@@ -41,7 +41,7 @@ class Restriction {
 
 	/**
 	 * @param \gentoid\route\NodeID $fromNode
-	 * @return \gentoid\route\Restriction
+	 * @return \gentoid\route\TurnRestriction
 	 */
 	public function setFromNode(\gentoid\route\NodeID $fromNode) {
 		$this->fromNode = $fromNode;
@@ -57,7 +57,7 @@ class Restriction {
 
 	/**
 	 * @param \gentoid\route\NodeID $viaNode
-	 * @return \gentoid\route\Restriction
+	 * @return \gentoid\route\TurnRestriction
 	 */
 	public function setViaNode(\gentoid\route\NodeID $viaNode) {
 		$this->viaNode = $viaNode;
@@ -73,7 +73,7 @@ class Restriction {
 
 	/**
 	 * @param \gentoid\route\NodeID $toNode
-	 * @return \gentoid\route\Restriction
+	 * @return \gentoid\route\TurnRestriction
 	 */
 	public function setToNode(\gentoid\route\NodeID $toNode) {
 		$this->toNode = $toNode;
@@ -89,7 +89,7 @@ class Restriction {
 
 	/**
 	 * @param boolean $isOnly
-	 * @return \gentoid\route\Restriction
+	 * @return \gentoid\route\TurnRestriction
 	 */
 	public function setIsOnly($isOnly) {
 		$this->isOnly = (bool)$isOnly;

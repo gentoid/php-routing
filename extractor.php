@@ -1,5 +1,6 @@
 <?php
 require_once('vendor/autoload.php');
+const EPSILON = 0.00000001;
 
 if (PHP_SAPI == 'cli') {
 	try {

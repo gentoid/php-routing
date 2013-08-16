@@ -3,7 +3,7 @@
 namespace gentoid\route;
 
 
-use gentoid\route\DataStructures\Coordinate;
+use gentoid\route\DataStructures\FixedPointCoordinate;
 use gentoid\utils\DB;
 use gentoid\utils\LogUtil;
 
@@ -280,12 +280,12 @@ class ExtractionContainers {
 				continue;
 			}
 			if ($edge->getTarget()->getValue() == $node->getNodeId()->getValue()) {
-				if (   $edge->getStartCoord()->getLat() != Coordinate::DEFAULT_VALUE
-					&& $edge->getStartCoord()->getLon() != Coordinate::DEFAULT_VALUE) {
+				if (   $edge->getStartCoord()->getLat() != FixedPointCoordinate::DEFAULT_VALUE
+					&& $edge->getStartCoord()->getLon() != FixedPointCoordinate::DEFAULT_VALUE) {
 					$edge->getTargetCoord()->setLat($node->getCoordinate()->getLat());
 					$edge->getTargetCoord()->setLon($node->getCoordinate()->getLon());
 
-					$distance = Coordinate::ApproximateDistance($edge->getStartCoord(), $node->getCoordinate());
+					$distance = FixedPointCoordinate::ApproximateDistance($edge->getStartCoord(), $node->getCoordinate());
 					$weight = ($distance * 10) / ($edge->getSpeed() * 3.6);
 					$weight = max(1, round($edge->getIsDurationSet() ? $edge->getSpeed() : $weight), PHP_ROUND_HALF_UP);
 					$distance = max(1, $distance);

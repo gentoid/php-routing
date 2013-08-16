@@ -3,30 +3,30 @@
 namespace gentoid\route;
 
 
-use gentoid\route\DataStructures\Coordinate;
+use gentoid\route\DataStructures\FixedPointCoordinate;
 
-class NodeCoords {
+class NodeInfo {
 
-	/** @var \gentoid\route\DataStructures\Coordinate */
+	/** @var \gentoid\route\DataStructures\FixedPointCoordinate */
 	protected $coordinate;
 
 	/** @var \gentoid\route\NodeID */
 	protected $nodeId;
 
 	public function __construct() {
-		$this->coordinate = new Coordinate();
+		$this->coordinate = new FixedPointCoordinate();
 		$this->nodeId = new NodeID();
 	}
 
 	/**
-	 * @return \gentoid\route\DataStructures\Coordinate
+	 * @return \gentoid\route\DataStructures\FixedPointCoordinate
 	 */
 	public function getCoordinate() {
 		return $this->coordinate;
 	}
 
 	/**
-	 * @param \gentoid\route\DataStructures\Coordinate $coordinate
+	 * @param \gentoid\route\DataStructures\FixedPointCoordinate $coordinate
 	 */
 	public function setCoordinate($coordinate) {
 		$this->coordinate = $coordinate;

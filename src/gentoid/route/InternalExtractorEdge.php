@@ -7,7 +7,7 @@
 namespace gentoid\route;
 
 
-use gentoid\route\DataStructures\Coordinate;
+use gentoid\route\DataStructures\FixedPointCoordinate;
 
 class InternalExtractorEdge {
 
@@ -47,18 +47,18 @@ class InternalExtractorEdge {
 	/** @var boolean */
 	protected $isContraFlow = false;
 
-	/** @var \gentoid\route\DataStructures\Coordinate */
+	/** @var \gentoid\route\DataStructures\FixedPointCoordinate */
 	protected $startCoord;
 
-	/** @var \gentoid\route\DataStructures\Coordinate */
+	/** @var \gentoid\route\DataStructures\FixedPointCoordinate */
 	protected $targetCoord;
 
 	public function __construct() {
 		$this->start = new NodeID();
 		$this->target = new NodeID();
 		$this->direction = new Direction(Direction::NOT_SURE);
-		$this->startCoord = new Coordinate();
-		$this->targetCoord = new Coordinate();
+		$this->startCoord = new FixedPointCoordinate();
+		$this->targetCoord = new FixedPointCoordinate();
 	}
 
 	/**
@@ -279,33 +279,33 @@ class InternalExtractorEdge {
 	}
 
 	/**
-	 * @return \gentoid\route\DataStructures\Coordinate
+	 * @return \gentoid\route\DataStructures\FixedPointCoordinate
 	 */
 	public function getStartCoord() {
 		return $this->startCoord;
 	}
 
 	/**
-	 * @param \gentoid\route\DataStructures\Coordinate $startCoord
+	 * @param \gentoid\route\DataStructures\FixedPointCoordinate $startCoord
 	 * @return InternalExtractorEdge
 	 */
-	public function setStartCoord(DataStructures\Coordinate $startCoord) {
+	public function setStartCoord(DataStructures\FixedPointCoordinate $startCoord) {
 		$this->startCoord = $startCoord;
 		return $this;
 	}
 
 	/**
-	 * @return \gentoid\route\DataStructures\Coordinate
+	 * @return \gentoid\route\DataStructures\FixedPointCoordinate
 	 */
 	public function getTargetCoord() {
 		return $this->targetCoord;
 	}
 
 	/**
-	 * @param \gentoid\route\DataStructures\Coordinate $targetCoord
+	 * @param \gentoid\route\DataStructures\FixedPointCoordinate $targetCoord
 	 * @return InternalExtractorEdge
 	 */
-	public function setTargetCoord(DataStructures\Coordinate $targetCoord) {
+	public function setTargetCoord(DataStructures\FixedPointCoordinate $targetCoord) {
 		$this->targetCoord = $targetCoord;
 		return $this;
 	}

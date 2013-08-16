@@ -2,7 +2,7 @@
 
 namespace gentoid\route;
 
-class Node extends NodeCoords {
+class Node extends NodeInfo {
 
 	/** @var bool */
 	protected $bollard = false;
