@@ -14,8 +14,8 @@ class PhantomNode {
 	/** @var \gentoid\route\NodeID */
 	protected $edgeBasedNode;
 
-	/** @var int */
-	protected $nodeBasedEdgeNameID = PHP_INT_MAX;
+	/** @var NodeID */
+	protected $nodeBasedEdgeNameID;
 
 	/** @var int */
 	protected $weight1 = PHP_INT_MAX;
@@ -30,7 +30,8 @@ class PhantomNode {
 	protected $location;
 
 	public function __construct() {
-		$this->edgeBasedNode = new NodeID(NodeID::DEFAULT_VALUE);
+		$this->edgeBasedNode = new NodeID();
+		$this->nodeBasedEdgeNameID = new NodeID();
 		$this->location = new FixedPointCoordinate();
 	}
 
@@ -63,7 +64,7 @@ class PhantomNode {
 		&& $this->weight1 != PHP_INT_MAX
 		&& $this->ratio >= 0.0
 		&& $this->ratio <= 1.0
-		&& $this->nodeBasedEdgeNameID != PHP_INT_MAX;
+		&& $this->nodeBasedEdgeNameID->getValue() != NodeID::DEFAULT_VALUE;
 	}
 
 	/**
@@ -91,18 +92,18 @@ class PhantomNode {
 	}
 
 	/**
-	 * @return int
+	 * @return NodeID
 	 */
 	public function getNodeBasedEdgeNameID() {
 		return $this->nodeBasedEdgeNameID;
 	}
 
 	/**
-	 * @param int $nodeBasedEdgeNameID
+	 * @param NodeID $nodeBasedEdgeNameID
 	 * @return PhantomNode
 	 */
 	public function setNodeBasedEdgeNameID($nodeBasedEdgeNameID) {
-		$this->nodeBasedEdgeNameID = intval($nodeBasedEdgeNameID);
+		$this->nodeBasedEdgeNameID = $nodeBasedEdgeNameID;
 		return $this;
 	}
 
