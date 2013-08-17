@@ -280,8 +280,8 @@ class ExtractionContainers {
 				continue;
 			}
 			if ($edge->getTarget()->getValue() == $node->getNodeId()->getValue()) {
-				if (   $edge->getStartCoord()->getLat() != FixedPointCoordinate::DEFAULT_VALUE
-					&& $edge->getStartCoord()->getLon() != FixedPointCoordinate::DEFAULT_VALUE) {
+				if (   $edge->getStartCoord()->getLat() != PHP_INT_MAX
+					&& $edge->getStartCoord()->getLon() != PHP_INT_MAX) {
 					$edge->getTargetCoord()->setLat($node->getCoordinate()->getLat());
 					$edge->getTargetCoord()->setLon($node->getCoordinate()->getLon());
 

@@ -10,6 +10,7 @@ if (PHP_SAPI == 'cli') {
 
 		if ($osmFile = $command->getOption('extract')) {
 			$extractor = new \gentoid\route\Extractor($osmFile->getValue());
+			\gentoid\route\Preparator::run();
 		}
 	} catch (Exception $e) {
 		echo "Error: " . $e->getMessage() . PHP_EOL;

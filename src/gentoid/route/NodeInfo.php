@@ -27,9 +27,11 @@ class NodeInfo {
 
 	/**
 	 * @param \gentoid\route\DataStructures\FixedPointCoordinate $coordinate
+	 * @return NodeInfo
 	 */
-	public function setCoordinate($coordinate) {
+	public function setCoordinate(FixedPointCoordinate $coordinate) {
 		$this->coordinate = $coordinate;
+		return $this;
 	}
 
 	/**
@@ -41,8 +43,10 @@ class NodeInfo {
 
 	/**
 	 * @param \gentoid\route\NodeID $nodeId
+	 * @return NodeInfo
 	 */
-	public function setNodeId($nodeId) {
+	public function setNodeId(NodeID $nodeId) {
 		$this->nodeId = $nodeId;
+		return $this;
 	}
 }

@@ -210,4 +210,18 @@ class CarProfile extends BasicProfile {
 		$w->setType(1);
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getTrafficSignalPenalty() {
+		return $this->traffic_signal_penalty;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUTurnPenalty() {
+		return $this->u_turn_penalty;
+	}
+
 }
