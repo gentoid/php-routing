@@ -162,6 +162,7 @@ class ExtractionContainers {
 		LogUtil::infoAsIs('[extractor] writing street name index    ...');
 
 		$this->dbh->query('delete from phpr_names');
+		$this->dbh->query('alter sequence phpr_names_id_seq restart with 1');
 
 		foreach ($this->nameVector as $name) {
 			$this->dbh->query("insert into phpr_names (name) values ('$name')");
@@ -172,6 +173,7 @@ class ExtractionContainers {
 		LogUtil::info('usable restrictions: '.$usableRestrictionsCounter);
 
 		$this->dbh->query('delete from phpr_nodes');
+		$this->dbh->query('alter sequence phpr_nodes_id_seq restart with 1');
 
 		$time = microtime(true);
 		LogUtil::infoAsIs('[extractor] Confirming/Writing used nodes...');
@@ -209,13 +211,14 @@ class ExtractionContainers {
 		}
 
 		$this->dbh->query('delete from phpr_restrictions');
+		$this->dbh->query('alter sequence phpr_restrictions_id_seq restart with 1');
 
 		for ($k = 0; $k < count($this->restrictionsVector); $k++) {
 			if (   $this->restrictionsVector[$k]->getRestriction()->getFromNode()->getValue() != NodeID::DEFAULT_VALUE
 				&& $this->restrictionsVector[$k]->getRestriction()->getToNode()  ->getValue() != NodeID::DEFAULT_VALUE) {
 				$restriction = $this->restrictionsVector[$k]->getRestriction();
 				$isOnly = ($restriction->getIsOnly()) ? 'true' : 'false';
-				$this->dbh->query("insert into phpr_restrictions (via_node, to_node, from_node, is_only) values (
+				$this->dbh->query("insert into phpr_restrictions (via_node_id, to_node_id, from_node_id, is_only) values (
 					(select id from phpr_nodes where osm_node_id = '{$restriction->getViaNode()->getValue()}'),
 					(select id from phpr_nodes where osm_node_id = '{$restriction->getToNode()->getValue()}'),
 					(select id from phpr_nodes where osm_node_id = '{$restriction->getFromNode()->getValue()}'),
@@ -269,6 +272,7 @@ class ExtractionContainers {
 		$i = $k = $counter = 0;
 		$values = array();
 		$this->dbh->query('delete from phpr_edges');
+		$this->dbh->query('alter sequence phpr_edges_id_seq restart with 1');
 		while (isset($this->allEdges[$i]) && isset($this->allNodes[$k])) {
 			$edge = &$this->allEdges[$i];
 			$node = &$this->allNodes[$k];
