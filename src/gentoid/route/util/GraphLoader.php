@@ -38,7 +38,7 @@ class GraphLoader {
 			if ($node['bollard']) {
 				array_push($bollardNodes, $osmNodeId);
 			}
-			if ($node['trafficLight']) {
+			if ($node['traffic_light']) {
 				array_push($trafficLightNodes, $osmNodeId);
 			}
 		}

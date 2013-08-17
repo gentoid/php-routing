@@ -196,7 +196,9 @@ class ExtractionContainers {
 					$counter = 0;
 				}
 				$counter++;
-				$nodes[] = "({$node->getNodeId()->getValue()}, {$node->getCoordinate()->getLat()}, {$node->getCoordinate()->getLon()})";
+				$bollard = ($node->getBollard()) ? 'true' : 'false';
+				$trafficLight = ($node->getTrafficLight()) ? 'true' : 'false';
+				$nodes[] = "({$node->getNodeId()->getValue()}, {$node->getCoordinate()->getLat()}, {$node->getCoordinate()->getLon()}, $bollard, $trafficLight)";
 				++$i;
 				++$k;
 				++$usedNodeCounter;
@@ -338,7 +340,7 @@ class ExtractionContainers {
 			return;
 		}
 		$values = implode(", ", $values);
-		$this->dbh->query("insert into phpr_nodes (osm_node_id, lat, lon) values {$values}");
+		$this->dbh->query("insert into phpr_nodes (osm_node_id, lat, lon, bollard, traffic_light) values {$values}");
 	}
 
 	protected function insertEdges(array $values) {
