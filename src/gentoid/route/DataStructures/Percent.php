@@ -27,7 +27,7 @@ class Percent {
 		$this->reinit($maxValue, $step);
 	}
 
-	public function reinit($maxValue, $step = 5) {
+	public function reInit($maxValue, $step = 5) {
 		$this->maxValue = $maxValue;
 		$this->currentValue = 0;
 		$this->internalPercent = $maxValue / 100;
@@ -46,7 +46,7 @@ class Percent {
 		}
 	}
 
-	public function printInctrement() {
+	public function printIncrement() {
 		$this->printStatus(++$this->currentValue);
 	}
 

@@ -8,6 +8,7 @@ namespace gentoid\route\DataStructures;
 
 
 use gentoid\route\NodeID;
+use gentoid\utils\LogUtil;
 
 class StaticRTree {
 
@@ -28,7 +29,13 @@ class StaticRTree {
 	public function init3(array $inputDataVector) {
 		$this->mElementCount = count($inputDataVector);
 
-		// todo: rest
+		LogUtil::infoAsIs('Constructing r-tree of '.$this->mElementCount.' elements');
+
+		$inputWrapperVector = array();
+
+		for ($elementCounter = '0'; bccomp($elementCounter, $this->mElementCount) == -1; bcadd($elementCounter, '1')) {
+			$inputWrapperVector[$elementCounter] = new WrappedInputElement($elementCounter);
+		}
 	}
 
 	/**

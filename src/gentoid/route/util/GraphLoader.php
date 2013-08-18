@@ -19,6 +19,7 @@ class GraphLoader {
 	 * @param NodeID[] $bollardNodes
 	 * @param NodeID[] $trafficLightNodes
 	 * @param NodeInfo[] $int2ExtNodeMap
+	 * @return int
 	 */
 	public static function readBinaryOSRMGraphFromStream(
 		array &$edgeList,
@@ -26,6 +27,7 @@ class GraphLoader {
 		array &$trafficLightNodes,
 		array &$int2ExtNodeMap
 	) {
+		$n = 0;
 		$dbh = DB::getInstance()->getDbh();
 		$stmt = $dbh->query("SELECT * FROM phpr_nodes");
 		while($node = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -45,6 +47,7 @@ class GraphLoader {
 
 		$stmt = $dbh->query("SELECT * FROM phpr_edges");
 		while ($edge = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+			$n++;
 			$forward = $backward = true;
 			if ($edge['direction'] == 1) {
 				$backward = false;
@@ -61,34 +64,23 @@ class GraphLoader {
 				$target = $tmp;
 			}
 
-			$inputEdge = new ImportEdge(
-				$source,
-				$target,
-				new NodeID($edge['name_id']),
-				$edge['weight'],
-				$forward,
-				$backward,
-				$edge['type'],
-				$edge['is_roundabout'],
-				$edge['ignore_in_grid'],
-				$edge['is_access_restricted'],
-				$edge['is_contra_flow']
-			);
-//			$inputEdge
-//				->setSource($source)
-//				->setTarget($target)
-//				->setName(new NodeID($edge['name_id']))
-//				->setWeight($edge['weight'])
-//				->setForward($forward)
-//				->setBackward($backward)
-//				->setType($edge['type'])
-//				->setRoundabout($edge['is_roundabout'])
-//				->setIgnoreInGrid($edge['ignore_in_grid'])
-//				->setAccessRestricted($edge['is_access_restricted'])
-//				->setContraFlow($edge['is_contra_flow']);
+			$inputEdge = new ImportEdge();
+			$inputEdge
+				->setSource($source)
+				->setTarget($target)
+				->setName(new NodeID($edge['name_id']))
+				->setWeight($edge['weight'])
+				->setForward($forward)
+				->setBackward($backward)
+				->setType($edge['type'])
+				->setRoundabout($edge['is_roundabout'])
+				->setIgnoreInGrid($edge['ignore_in_grid'])
+				->setAccessRestricted($edge['is_access_restricted'])
+				->setContraFlow($edge['is_contra_flow']);
 			array_push($edgeList, $inputEdge);
 		}
 //		usort($edgeList, array('\\gentoid\\route\\NodeID', 'cmp'));
+		return $n;
 	}
 
 } 

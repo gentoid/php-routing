@@ -44,6 +44,12 @@ class NodeBasedEdge {
 	/** @var bool */
 	protected $contraFlow;
 
+	public function __construct() {
+		$this->source = new NodeID();
+		$this->target = new NodeID();
+		$this->name   = new NodeID();
+	}
+
 	/**
 	 * @param NodeID $s
 	 * @param NodeID $t
@@ -58,7 +64,7 @@ class NodeBasedEdge {
 	 * @param boolean $cf
 	 * @throws \Exception
 	 */
-	public function __construct(NodeID $s, NodeID $t, NodeID $n, $w, $f, $b, $ty, $ra, $ig,$ar, $cf) {
+	public function set(NodeID $s, NodeID $t, NodeID $n, $w, $f, $b, $ty, $ra, $ig,$ar, $cf) {
 		if ($ty < 0) {
 			throw new \Exception('Negative edge type');
 		}
@@ -104,10 +110,28 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param \gentoid\route\NodeID $source
+	 * @return NodeBasedEdge
+	 */
+	public function setSource(NodeID $source) {
+		$this->source = $source;
+		return $this;
+	}
+
+	/**
 	 * @return \gentoid\route\NodeID
 	 */
 	public function getTarget() {
 		return $this->target;
+	}
+
+	/**
+	 * @param \gentoid\route\NodeID $target
+	 * @return NodeBasedEdge
+	 */
+	public function setTarget(NodeID $target) {
+		$this->target = $target;
+		return $this;
 	}
 
 	/**
@@ -118,10 +142,28 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param \gentoid\route\NodeID $name
+	 * @return NodeBasedEdge
+	 */
+	public function setName(NodeID $name) {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getWeight() {
 		return $this->weight;
+	}
+
+	/**
+	 * @param int $weight
+	 * @return NodeBasedEdge
+	 */
+	public function setWeight($weight) {
+		$this->weight = intval($weight);
+		return $this;
 	}
 
 	/**
@@ -132,10 +174,28 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param boolean $forward
+	 * @return NodeBasedEdge
+	 */
+	public function setForward($forward) {
+		$this->forward = (bool)$forward;
+		return $this;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function getBackward() {
 		return $this->backward;
+	}
+
+	/**
+	 * @param boolean $backward
+	 * @return NodeBasedEdge
+	 */
+	public function setBackward($backward) {
+		$this->backward = (bool)$backward;
+		return $this;
 	}
 
 	/**
@@ -146,10 +206,28 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param int $type
+	 * @return NodeBasedEdge
+	 */
+	public function setType($type) {
+		$this->type = intval($type);
+		return $this;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function getRoundabout() {
 		return $this->roundabout;
+	}
+
+	/**
+	 * @param boolean $roundabout
+	 * @return NodeBasedEdge
+	 */
+	public function setRoundabout($roundabout) {
+		$this->roundabout = (bool)$roundabout;
+		return $this;
 	}
 
 	/**
@@ -160,6 +238,15 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param boolean $ignoreInGrid
+	 * @return NodeBasedEdge
+	 */
+	public function setIgnoreInGrid($ignoreInGrid) {
+		$this->ignoreInGrid = (bool)$ignoreInGrid;
+		return $this;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function getAccessRestricted() {
@@ -167,10 +254,28 @@ class NodeBasedEdge {
 	}
 
 	/**
+	 * @param boolean $accessRestricted
+	 * @return NodeBasedEdge
+	 */
+	public function setAccessRestricted($accessRestricted) {
+		$this->accessRestricted = (bool)$accessRestricted;
+		return $this;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function getContraFlow() {
 		return $this->contraFlow;
+	}
+
+	/**
+	 * @param boolean $contraFlow
+	 * @return NodeBasedEdge
+	 */
+	public function setContraFlow($contraFlow) {
+		$this->contraFlow = (bool)$contraFlow;
+		return $this;
 	}
 
 }

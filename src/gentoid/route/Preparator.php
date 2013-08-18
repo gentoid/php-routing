@@ -7,10 +7,12 @@
 namespace gentoid\route;
 
 
+use gentoid\route\Contractor\EdgeBasedGraphFactory;
 use gentoid\route\DataStructures\ImportEdge;
 use gentoid\route\DataStructures\SpeedProfileProperties;
 use gentoid\route\profiles\CarProfile;
 use gentoid\route\util\GraphLoader;
+use gentoid\utils\LogUtil;
 
 class Preparator {
 
@@ -38,12 +40,27 @@ class Preparator {
 
 		/** @var ImportEdge[] $edgeList */
 		$edgeList = array();
-		GraphLoader::readBinaryOSRMGraphFromStream($edgeList, $bollardNodes, $trafficLightNodes, $internalToExternalNodeMapping);
-//		var_dump($bollardNodes, $trafficLightNodes, $internalToExternalNodeMapping, $edgeList);
-		print_r($bollardNodes);
-		print_r($trafficLightNodes);
-		print_r($internalToExternalNodeMapping);
-		print_r($edgeList);
+		$nodeBasedNodeNumber = GraphLoader::readBinaryOSRMGraphFromStream($edgeList, $bollardNodes, $trafficLightNodes, $internalToExternalNodeMapping);
+
+		LogUtil::infoAsIs(count($inputRestrictions) . ' restrictions, '
+			. count($bollardNodes) . ' bollard nodes, '
+			. count($trafficLightNodes) . ' traffic lights');
+
+		if (count($edgeList) == 0) {
+			throw new \Exception('The input data is broken. It is impossible to do any turns in this graph');
+		}
+
+		LogUtil::infoAsIs('Generating edge-expanded graph representation');
+
+		$edgeBasedGraphFactory = new EdgeBasedGraphFactory(
+			$nodeBasedNodeNumber,
+			$edgeList,
+			$bollardNodes,
+			$trafficLightNodes,
+			$inputRestrictions,
+			$internalToExternalNodeMapping,
+			$speedProfile
+		);
 	}
 
 } 

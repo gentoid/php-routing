@@ -93,4 +93,8 @@ class NodeID extends BigInt {
 		return bccomp($this->value, $n->getValue()) === 0;
 	}
 
+	public function inc() {
+		$this->value = bcadd($this->value, '1');
+	}
+
 }
